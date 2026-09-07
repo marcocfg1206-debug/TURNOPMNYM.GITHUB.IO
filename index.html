@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUADRE BANCOS SALA TURNO P.M</title>
+    <style>
+        /* Paleta de Colores de Firebase */
+        :root {
+            --firebase-red: #DD2C00;
+            --firebase-orange: #F5820D;
+            --firebase-yellow: #FFCB2B;
+            --background-dark: #121212;
+            --surface-dark: #2A2A2A;
+            --text-light: #E0E0E0;
+            --text-muted: #888888;
+        }
+
+        /* Nueva Animación de Fondo estilo "Apple Music" */
+        @keyframes dynamicBackground {
+            0% { background-position: 0% 50%, 100% 50%, 50% 100%, 50% 0%; }
+            25% { background-position: 50% 0%, 50% 100%, 0% 50%, 100% 50%; }
+            50% { background-position: 100% 50%, 0% 50%, 50% 0%, 50% 100%; }
+            75% { background-position: 50% 100%, 50% 0%, 100% 50%, 0% 50%; }
+            100% { background-position: 0% 50%, 100% 50%, 50% 100%, 50% 0%; }
+        }
+
+        /* Animación de Sombra Camaleón para Inputs */
+        @keyframes camaleonShadow {
+            0% { box-shadow: 0 0 10px rgba(255, 203, 43, 0.7); }
+            25% { box-shadow: 0 0 12px rgba(33, 150, 243, 0.8); }
+            50% { box-shadow: 0 0 14px rgba(187, 222, 251, 0.9); }
+            75% { box-shadow: 0 0 12px rgba(255, 203, 43, 0.8); }
+            100% { box-shadow: 0 0 10px rgba(33, 150, 243, 0.7); }
+        }
+
+        /* Estilos generales del cuerpo de la página */
+        body {
+            background:
+                radial-gradient(circle at 10% 20%, #DD2C00, transparent 70%),
+                radial-gradient(circle at 90% 80%, #F5820D, transparent 70%),
+                radial-gradient(circle at 50% 50%, #2196F3, transparent 70%),
+                radial-gradient(circle at 20% 80%, #03A9F4, transparent 70%),
+                radial-gradient(circle at 80% 20%, #BBDEFB, transparent 70%),
+                radial-gradient(circle at 45% 75%, #FFFFFF, transparent 70%),
+                radial-gradient(circle at 70% 30%, #DD2C00, transparent 70%),
+                radial-gradient(circle at 30% 60%, #F5820D, transparent 70%);
+            background-color: #121212;
+            background-size: 300% 300%;
+            animation: dynamicBackground 25s ease-in-out infinite;
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        /* Contenedor principal de la aplicación - Efecto Liquid Glass Mejorado */
+        .contenedor-principal {
+            background: rgba(42, 42, 42, 0.4);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 60px rgba(0, 0, 0, 0.6);
+            width: 90vw;
+            max-width: 900px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Estilos para los títulos principales de la aplicación */
+        h1, h2 {
+            text-align: center;
+            color: var(--firebase-orange);
+            margin-bottom: 5px;
+            text-shadow: 0 0 15px rgba(255, 137, 100, 0.5);
+        }
+
+        /* Reloj y Fecha */
+        #dateTimeContainer {
+            font-family: monospace;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #digitalTime {
+            font-size: 2.2em;
+            margin: 0;
+            color: var(--text-light);
+        }
+        #digitalDate {
+            font-size: 1.6em; /* Aumentado para que sea más notable */
+            margin: 5px 0 0 0;
+            color: var(--text-light); /* Cambiado para que coincida con el color de la hora */
+        }
+
+        /* Contenedor de Formulario y Secciones - Efecto Liquid Glass Mejorado */
+        .form-container, .summary-section, .saved-cuadres-section, .print-view-section {
+            background: rgba(50, 50, 50, 0.5);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Títulos de secciones */
+        h3, h4, h5 {
+            color: var(--firebase-orange);
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-shadow: 0 0 8px rgba(255, 137, 100, 0.4);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--text-light);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            background-color: rgba(60, 60, 60, 0.4);
+            color: var(--text-light);
+            box-shadow: 0 0 0 2px transparent;
+            transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.6s ease-in-out;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus,
+        input[type="text"]:hover,
+        input[type="number"]:hover,
+        select:hover,
+        textarea:hover {
+            outline: none;
+            border-color: var(--firebase-yellow);
+            background-color: rgba(60, 60, 60, 0.6);
+            animation: camaleonShadow 2s infinite alternate ease-in-out;
+        }
+
+        input[readonly] {
+            background-color: rgba(80, 80, 80, 0.4);
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Botones - Modo Oscuro */
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .button-group button {
+            position: relative;
+            z-index: 1;
+            background: var(--firebase-orange);
+            color: var(--surface-dark);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            overflow: hidden;
+            transition: color 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 8px rgba(245, 130, 13, 0.2);
+        }
+
+        /* Nuevo efecto de iluminación */
+        .button-group button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+            z-index: -1;
+        }
+
+        .button-group button:hover::before {
+            left: 100%;
+        }
+
+        .button-group button:hover {
+            background-color: var(--firebase-red);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(221, 44, 0, 0.5), 0 0 15px var(--firebase-yellow);
+        }
+
+        .button-group button#btnEliminarCuadre, .button-group button#btnBorrarTodo, .btn-remove-cheque {
+            background-color: #B71C1C;
+            color: var(--text-light);
+            box-shadow: 0 2px 8px rgba(183, 28, 28, 0.2);
+        }
+        .button-group button#btnEliminarCuadre:hover, .button-group button#btnBorrarTodo:hover, .btn-remove-cheque:hover {
+            background-color: #7F0000;
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(127, 0, 0, 0.5), 0 0 15px #FF5722;
+        }
+        .button-group button#btnPrintCuadres, .button-group button#btnGenerarPDF {
+            background-color: var(--surface-dark);
+            color: var(--text-light);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .button-group button#btnPrintCuadres:hover, .button-group button#btnGenerarPDF:hover {
+            background-color: #212121;
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 15px var(--text-light);
+        }
+        .add-cheque-button {
+            background-color: #2E7D32;
+            color: var(--text-light);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 8px rgba(46, 125, 50, 0.2);
+        }
+        .add-cheque-button:hover {
+            background-color: #1B5E20;
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(27, 94, 32, 0.5), 0 0 15px #8BC34A;
+        }
+
+
+        /* Tablas de resumen - Modo Oscuro */
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .summary-table th, .summary-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            text-align: left;
+        }
+        .summary-table th {
+            background-color: rgba(60, 60, 60, 0.5);
+            color: var(--firebase-orange);
+        }
+        .total-value {
+            font-weight: bold;
+            text-align: right;
+            color: var(--text-light);
+        }
+        .summary-difference-container {
+            margin-top: 20px;
+        }
+        #diferenciaTotalFinal {
+            font-weight: bold;
+            color: #B71C1C;
+        }
+        #diferenciaTotalFinal[value="0.00"] {
+            color: #2E7D32;
+        }
+
+        /* Cuadres guardados - Modo Oscuro */
+        .saved-cuadres-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .saved-cuadre-item {
+            background: rgba(60, 60, 60, 0.7);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .saved-cuadre-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+        }
+        .saved-cuadre-item p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            display: flex;
+            justify-content: space-between;
+        }
+        .saved-cuadre-item p strong {
+            color: var(--text-light);
+        }
+        .saved-cuadre-item p span {
+            color: var(--text-light);
+            text-align: right;
+        }
+        .saved-cuadre-item .id-paquete-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--firebase-yellow);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .saved-cuadre-item .action-buttons {
+            background-color: var(--surface-dark);
+            color: var(--text-light);
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .saved-cuadre-item .action-buttons:hover {
+            background-color: #212121;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3), 0 0 10px var(--text-light);
+        }
+        .saved-cuadre-item .action-buttons[onclick*="delete"] {
+            background-color: #B71C1C;
+            box-shadow: 0 2px 8px rgba(183, 28, 28, 0.2);
+        }
+        .saved-cuadre-item .action-buttons[onclick*="delete"]:hover {
+            background-color: #7F0000;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 15px rgba(127, 0, 0, 0.4), 0 0 10px #FF5722;
+        }
+
+
+        /* Modals - Efecto Liquid Glass mejorado */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-content {
+            background: rgba(30, 30, 30, 0.75);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            padding: 30px;
+            border-radius: 30px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 80px rgba(0, 0, 0, 0.8);
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: scale(0.9);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), box-shadow 0.3s ease;
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 2.5em;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+        .modal-close:hover {
+            color: var(--firebase-red);
+            transform: scale(1.2) rotate(90deg);
+        }
+
+        .cheque-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+        .cheque-item .form-group {
+            flex: 1;
+            min-width: 150px;
+            margin-bottom: 0;
+        }
+        .cheque-item button.btn-remove-cheque {
+            background-color: #B71C1C;
+            color: var(--text-light);
+            padding: 8px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .cheque-item button.btn-remove-cheque:hover {
+            background-color: #7F0000;
+            transform: translateY(-2px);
+        }
+        .add-cheque-button {
+            background-color: #2E7D32;
+            color: var(--text-light);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .add-cheque-button:hover {
+            background-color: #1B5E20;
+            transform: translateY(-2px);
+        }
+
+        .cash-denomination-content {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .cash-denomination-column {
+            flex: 1;
+            min-width: 250px;
+            max-width: 45%;
+        }
+        .denomination-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+        .denomination-item label {
+            flex-basis: 80px;
+            text-align: right;
+            font-size: 1em;
+            color: var(--text-light);
+        }
+        .denomination-item input {
+            flex-grow: 1;
+            max-width: 80px;
+            text-align: center;
+            padding: 5px;
+            background-color: rgba(60, 60, 60, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-light);
+        }
+        .denomination-item .denomination-display-value {
+            flex-basis: 120px;
+            text-align: right;
+            font-weight: bold;
+            color: var(--firebase-yellow);
+            padding: 5px;
+            background-color: rgba(80, 80, 80, 0.5);
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .modal-button-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .modal-button-group button {
+            background-color: var(--firebase-orange);
+            color: var(--surface-dark);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 8px rgba(245, 130, 13, 0.2);
+        }
+        .modal-button-group button:hover {
+            background-color: var(--firebase-red);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(221, 44, 0, 0.5), 0 0 15px var(--firebase-yellow);
+        }
+
+        /* Estilos específicos para impresión (Modo Oscuro/Claro) */
+        @media print {
+            body {
+                background-color: #ffffff;
+                color: #000000;
+                padding: 0;
+                overflow: visible !important;
+            }
+            .contenedor-principal > h1,
+            .contenedor-principal > h2,
+            .tabs,
+            .tab-content.content1 .form-container,
+            .tab-content.content1 .button-group,
+            .tab-content.content1 .saved-cuadres-section,
+            .tab-content.content1 .summary-section,
+            #dateTimeContainer,
+            .modal-overlay {
+                display: none !important;
+            }
+            .tab-content.content1 .print-view-section {
+                display: block !important;
+                width: 100%;
+                max-width: none;
+                padding: 0;
+                margin: 0;
+                background-color: transparent;
+                box-shadow: none;
+                border: none;
+            }
+            .tab-content.content1 .print-view-section h4 {
+                color: #000000;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .tab-content.content1 .print-view-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+                justify-content: flex-start;
+            }
+            .tab-content.content1 .single-cuadre-print {
+                width: 30%;
+                box-sizing: border-box;
+                margin: 5px;
+                background-color: #f9f9f9;
+                border: 1px solid #ccc;
+                color: #000;
+                page-break-inside: avoid;
+            }
+             .tab-content.content1 .single-cuadre-print h4,
+             .tab-content.content1 .single-cuadre-print h5 {
+                color: #333;
+                font-size: 1em;
+            }
+            .tab-content.content1 .single-cuadre-print table th {
+                background-color: #eee;
+                color: #333;
+            }
+            .tab-content.content1 .single-cuadre-print table,
+            .tab-content.content1 .single-cuadre-print table td {
+                color: #000;
+                border-color: #ccc;
+            }
+             .tab-content.content1 .single-cuadre-print table td {
+                font-size: 0.75em;
+            }
+            @page {
+                size: letter portrait;
+                margin: 1cm;
+                @bottom-center {
+                    content: "Página " counter(page) " de " counter(pages);
+                    font-size: 8pt;
+                    color: #555;
+                }
+            }
+        }
+
+
+        /* Navegación principal, ventanas emergentes y temas */
+        :root {
+            --theme-a: #f5820d;
+            --theme-b: #2196f3;
+            --theme-c: #dd2c00;
+            --theme-bg: #0b1020;
+        }
+        body {
+            align-items: center;
+            overflow-x: hidden;
+            background:
+                radial-gradient(circle at 12% 18%, var(--theme-a), transparent 44%),
+                radial-gradient(circle at 88% 22%, var(--theme-b), transparent 46%),
+                radial-gradient(circle at 72% 86%, var(--theme-c), transparent 48%),
+                radial-gradient(circle at 24% 78%, color-mix(in srgb, var(--theme-b) 60%, white), transparent 48%);
+            background-color: var(--theme-bg);
+            background-size: 220% 220%;
+            animation: dynamicBackground 25s ease-in-out infinite;
+        }
+        .home-screen {
+            width: min(960px, 92vw);
+            min-height: 72vh;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            position: relative;
+        }
+        .home-card {
+            width: min(760px, 90%);
+            padding: 54px 34px;
+            border-radius: 34px;
+            background: rgba(12, 18, 32, .48);
+            border: 1px solid rgba(255,255,255,.2);
+            box-shadow: 0 30px 90px rgba(0,0,0,.46), inset 0 1px 0 rgba(255,255,255,.18);
+            backdrop-filter: blur(34px) saturate(135%);
+            -webkit-backdrop-filter: blur(34px) saturate(135%);
+        }
+        .brand-mark { font-size: clamp(3rem, 9vw, 7rem); margin: 0; letter-spacing: .08em; color: white; }
+        .home-subtitle { font-size: clamp(1.25rem, 3vw, 2rem); margin: 10px 0 8px; color: rgba(255,255,255,.94); }
+        .home-description { color: rgba(255,255,255,.72); margin: 0 auto 30px; max-width: 560px; line-height: 1.6; }
+        .home-actions { display:flex; justify-content:center; gap:14px; flex-wrap:wrap; }
+        .nav-button, .settings-save {
+            border: 1px solid rgba(255,255,255,.24); color: white; font-weight: 800; font-size: 1rem;
+            padding: 14px 24px; border-radius: 14px; cursor:pointer;
+            background: linear-gradient(135deg, color-mix(in srgb, var(--theme-a) 86%, white), var(--theme-b));
+            box-shadow: 0 10px 30px color-mix(in srgb, var(--theme-a) 35%, transparent);
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+        .nav-button.secondary { background: rgba(255,255,255,.10); backdrop-filter: blur(14px); }
+        .nav-button:hover, .settings-save:hover { transform: translateY(-3px); box-shadow: 0 15px 38px color-mix(in srgb, var(--theme-b) 40%, transparent); }
+        .app-overlay, .settings-overlay {
+            position: fixed; inset: 0; z-index: 1500; display:none; align-items:center; justify-content:center;
+            padding: 22px; box-sizing:border-box; background: rgba(2,5,12,.68); backdrop-filter: blur(18px);
+        }
+        .app-overlay.active, .settings-overlay.active { display:flex; animation: fadeWindow .35s ease; }
+        @keyframes fadeWindow { from { opacity:0; } to { opacity:1; } }
+        .app-window-shell { width:min(1080px, 96vw); height:min(94vh, 980px); position:relative; }
+        #main-app-container { width:100%; height:100%; overflow-y:auto; max-width:none; }
+        .window-close {
+            position:absolute; right:16px; top:13px; z-index:1601; width:42px; height:42px; border-radius:50%;
+            border:1px solid rgba(255,255,255,.25); background:rgba(0,0,0,.32); color:white; font-size:1.55rem; cursor:pointer;
+        }
+        .settings-panel {
+            width:min(860px, 95vw); max-height:88vh; overflow:auto; padding:30px; border-radius:28px;
+            background:rgba(20,24,38,.78); border:1px solid rgba(255,255,255,.18); color:white;
+            box-shadow:0 25px 90px rgba(0,0,0,.6); backdrop-filter:blur(32px);
+        }
+        .settings-panel h2 { margin-top:0; }
+        .theme-heading { text-align:left; margin:24px 0 12px; color:white; }
+        .theme-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+        .theme-card { border:2px solid transparent; border-radius:16px; padding:14px; color:white; cursor:pointer; text-align:left; background:rgba(255,255,255,.08); }
+        .theme-card.active { border-color:white; box-shadow:0 0 0 3px color-mix(in srgb, var(--theme-a) 45%, transparent); }
+        .theme-dots { display:flex; gap:7px; margin-bottom:9px; }
+        .theme-dots i { width:25px; height:25px; border-radius:50%; display:block; }
+        .settings-row { display:grid; grid-template-columns:1fr auto; gap:12px; align-items:end; }
+        .settings-row input { min-height:46px; }
+        @media (max-width:700px) { .theme-grid{grid-template-columns:repeat(2,1fr)} .settings-row{grid-template-columns:1fr} .home-card{padding:38px 20px} }
+
+
+
+        /* Correcciones de ventanas, visibilidad del tema y controles */
+        .app-overlay, .settings-overlay {
+            background:
+                linear-gradient(rgba(2,5,12,.28), rgba(2,5,12,.42)),
+                radial-gradient(circle at 12% 18%, var(--theme-a), transparent 45%),
+                radial-gradient(circle at 88% 22%, var(--theme-b), transparent 48%),
+                radial-gradient(circle at 72% 86%, var(--theme-c), transparent 50%);
+            background-color: var(--theme-bg);
+            background-size: 100% 100%, 220% 220%, 220% 220%, 220% 220%;
+            animation: dynamicBackground 25s ease-in-out infinite;
+        }
+        .app-overlay { z-index: 1500; }
+        .settings-overlay { z-index: 3500; }
+        .modal-overlay { z-index: 5000 !important; }
+        .modal-content { z-index: 5001; }
+        #main-app-container {
+            background: rgba(18, 23, 38, .58);
+            border-color: color-mix(in srgb, var(--theme-b) 45%, rgba(255,255,255,.18));
+            box-shadow: 0 25px 90px rgba(0,0,0,.55), 0 0 42px color-mix(in srgb, var(--theme-b) 20%, transparent);
+        }
+        .settings-panel {
+            position: relative;
+            background: rgba(14, 18, 31, .62);
+            border-color: color-mix(in srgb, var(--theme-b) 52%, rgba(255,255,255,.2));
+        }
+        .storage-status {
+            margin-top: 12px; text-align: center; min-height: 22px; font-weight: 700;
+            color: #b7f7d4;
+        }
+        .button-group button, .add-cheque-button, .modal-button-group button,
+        .saved-cuadre-item .action-buttons { pointer-events: auto; }
+
+    
+
+        /* Dock inferior estilo macOS y efecto Aladdin */
+        body { padding-bottom: 112px; }
+        .mac-dock-wrap { position:fixed; left:0; right:0; bottom:16px; z-index:9000; display:flex; justify-content:center; pointer-events:none; }
+        .mac-dock { pointer-events:auto; display:flex; align-items:flex-end; gap:10px; padding:10px 14px; border-radius:24px;
+          background:rgba(20,24,38,.54); border:1px solid rgba(255,255,255,.22); backdrop-filter:blur(28px) saturate(150%);
+          box-shadow:0 18px 55px rgba(0,0,0,.46),inset 0 1px rgba(255,255,255,.18); }
+        .dock-item { width:58px; height:58px; border:1px solid rgba(255,255,255,.22); border-radius:16px; cursor:pointer; color:white;
+          display:grid; place-items:center; position:relative; font-size:1.65rem; background:linear-gradient(145deg,var(--theme-a),var(--theme-b));
+          box-shadow:0 8px 20px rgba(0,0,0,.32); transition:transform .22s cubic-bezier(.2,.8,.2,1),margin .22s ease; }
+        .dock-item:hover,.dock-item:focus-visible { transform:translateY(-12px) scale(1.28); margin:0 8px; outline:none; }
+        .dock-item::after { content:attr(data-label); position:absolute; bottom:72px; left:50%; transform:translateX(-50%) scale(.88);
+          white-space:nowrap; opacity:0; pointer-events:none; padding:6px 10px; border-radius:9px; font:600 .76rem Arial;
+          color:white; background:rgba(5,8,16,.86); transition:.2s ease; }
+        .dock-item:hover::after,.dock-item:focus-visible::after { opacity:1; transform:translateX(-50%) scale(1); }
+        .dock-separator { width:1px; height:42px; background:rgba(255,255,255,.25); margin:0 4px 7px; }
+        .tool-overlay { position:fixed; inset:0; z-index:7000; display:none; align-items:center; justify-content:center; padding:18px;
+          background:radial-gradient(circle at 12% 18%,var(--theme-a),transparent 46%),radial-gradient(circle at 88% 22%,var(--theme-b),transparent 48%),radial-gradient(circle at 72% 86%,var(--theme-c),transparent 50%),var(--theme-bg);
+          background-size:220% 220%; animation:dynamicBackground 25s ease-in-out infinite; perspective:1200px; }
+        .tool-overlay.active { display:flex; }
+        .tool-window { width:min(1240px,97vw); height:min(91vh,960px); position:relative; border-radius:28px; overflow:hidden;
+          background:rgba(12,16,28,.62); border:1px solid rgba(255,255,255,.2); box-shadow:0 30px 100px rgba(0,0,0,.65);
+          transform-origin:50% 100%; }
+        .tool-overlay.opening .tool-window { animation:aladdinOpen .62s cubic-bezier(.16,.9,.2,1) both; }
+        .tool-overlay.closing .tool-window { animation:aladdinClose .56s cubic-bezier(.55,.02,.85,.35) both; }
+        @keyframes aladdinOpen { 0%{opacity:0;transform:translateY(55vh) scale(.08,.02) skewX(-15deg);filter:blur(12px)} 55%{opacity:1;transform:translateY(-2vh) scale(1.03,.92) skewX(2deg);filter:blur(0)} 100%{transform:none} }
+        @keyframes aladdinClose { 0%{opacity:1;transform:none} 45%{transform:translateY(4vh) scale(.9,.72) skewX(4deg)} 100%{opacity:0;transform:translateY(58vh) scale(.06,.015) skewX(18deg);filter:blur(14px)} }
+        .tool-frame { width:100%; height:100%; border:0; background:transparent; }
+        .tool-titlebar { position:absolute; z-index:2; left:16px; top:13px; display:flex; gap:8px; }
+        .traffic { width:16px;height:16px;border-radius:50%;border:0;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}
+        .traffic.close{background:#ff5f57}.traffic.min{background:#febc2e}
+        @media(max-width:650px){.dock-item{width:49px;height:49px}.mac-dock{gap:6px;padding:8px 10px}.dock-item:hover{margin:0 3px}.tool-overlay{padding:8px}.tool-window{height:94vh}}
+
+
+        #homeScreen { display: none !important; }
+        .dock-hint { margin-top: 22px; color: rgba(255,255,255,.72); font-size: 2rem; animation: dockHint 2s ease-in-out infinite; }
+        @keyframes dockHint { 0%,100% { transform: translateY(0); opacity:.45; } 50% { transform: translateY(8px); opacity:1; } }
+        .home-card { padding-bottom: 38px; }
+
+    
+        .company-watermark { position:fixed; inset:0; z-index:0; display:grid; place-items:center; pointer-events:none; overflow:hidden; }
+        .company-watermark span {
+          width: 100%;
+          max-width: 92vw;
+          text-align: center;
+          font-weight: 650;
+          text-transform: none;
+          letter-spacing: .12em;
+          line-height: 1.35;
+          font-size: clamp(.72rem, 1.35vw, 1.15rem);
+          color: rgba(255,255,255,.10);
+          text-shadow: 0 0 18px color-mix(in srgb,var(--theme-b) 18%,transparent);
+          transform: none;
+          user-select: none;
+        }
+        .home-screen,.mac-dock-wrap,.app-overlay,.settings-overlay,.tool-overlay{position:fixed}
+        .slb-overlay { position:fixed; inset:0; z-index:7100; display:none; align-items:center; justify-content:center; padding:18px;
+          background:radial-gradient(circle at 12% 18%,var(--theme-a),transparent 46%),radial-gradient(circle at 88% 22%,var(--theme-b),transparent 48%),radial-gradient(circle at 72% 86%,var(--theme-c),transparent 50%),var(--theme-bg);
+          background-size:220% 220%; animation:dynamicBackground 25s ease-in-out infinite; perspective:1200px; }
+        .slb-overlay.active{display:flex}.slb-window{width:min(1470px,98vw);height:min(93vh,1040px);position:relative;border-radius:28px;overflow:hidden;
+          background:rgba(12,16,28,.62);border:1px solid rgba(255,255,255,.2);box-shadow:0 30px 100px rgba(0,0,0,.65);transform-origin:50% 100%}
+        .slb-overlay.opening .slb-window{animation:aladdinOpen .62s cubic-bezier(.16,.9,.2,1) both}.slb-overlay.closing .slb-window{animation:aladdinClose .56s cubic-bezier(.55,.02,.85,.35) both}
+        .slb-frame{width:100%;height:100%;border:0}.tool-titlebar.slb-controls{top:12px;left:14px}
+
+    </style>
+</head>
+<body>
+    <div class="company-watermark" aria-hidden="true"><span>Transporte y Administracion de Valores, S.A.</span></div>
+
+
+    <main id="homeScreen" class="home-screen">
+        <section class="home-card">
+            <p id="homeBrand" class="brand-mark">M.V.C.G</p>
+            <h1 class="home-subtitle">Sala Bancos Quetzaltenango</h1>
+            <p class="home-description">Seleccione una herramienta desde el Dock inferior.</p>
+            <div class="dock-hint" aria-hidden="true">⌄</div>
+        </section>
+    </main>
+    <div id="appOverlay" class="app-overlay" aria-hidden="true">
+      <div class="app-window-shell">
+        <button type="button" class="window-close" id="closeAppBtn" aria-label="Cerrar">&times;</button>
+    <div class="contenedor-principal" id="main-app-container">
+        <h1>CUADRE BANCOS</h1>
+        <h2 id="appBrand">M.V.C.G.</h2>
+
+        <div class="tabs">
+        </div>
+
+        <div class="tab-content content1" style="display: block;">
+            <div id="dateTimeContainer">
+                <p id="digitalDate"></p>
+                <p id="digitalTime"></p>
+            </div>
+
+            <div class="form-container">
+                <h3>Remesas</h3>
+                <form id="mainForm">
+                    <div class="form-group">
+                        <label for="monedaValor">Seleccionar Moneda:</label>
+                        <div class="currency-input-group">
+                            <select id="monedaValor" name="monedaValor">
+                                <option value="GTQ">Quetzales (GTQ)</option>
+                                <option value="USD">Dólares (USD)</option>
+                                <option value="EUR">Euros (EUR)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bancoSeleccion">Seleccionar Banco:</label>
+                        <select id="bancoSeleccion" name="bancoSeleccion">
+                            <option value="INTERBANCO">INTERBANCO</option>
+                            <option value="PROMERICA">PROMERICA</option>
+                            <option value="FICOHSA">FICOHSA</option>
+                            <option value="G&T">G&T</option>
+                            <option value="BAM">BAM</option>
+                            <option value="CHN">CHN</option>
+                            <option value="BANCO INMOBILIARIO">BANCO INMOBILIARIO</option>
+                            <option value="OTRO">OTRO</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="idPaquete">ID PAQUETE:</label>
+                        <input type="text" id="idPaquete" name="idPaquete" placeholder="Ej: PQT-2025-001">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="valorTeorico">Valor Teórico Contenido:</label>
+                        <input type="number" id="valorTeorico" name="valorTeorico" placeholder="Valor numérico esperado" step="0.01">
+                    </div>
+                    
+                    <div class="button-group" style="margin-bottom: 20px;">
+                        <button type="button" id="btnOpenChequesModal">Administrar Cheques</button>
+                        <button type="button" id="btnOpenDenominationsModal">Administrar Billetes y Monedas</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="diferenciaValores">Diferencia (Contado - Teórico):</label>
+                        <input type="text" id="diferenciaValores" name="diferenciaValores" readonly placeholder="Se calculará automáticamente">
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" id="btnGuardarCuadre">Guardar Cuadre</button>
+                        <button type="button" id="btnGenerarPDF">Generar PDF</button>
+                        <button type="button" id="btnEliminarCuadre">Eliminar Cuadre Seleccionado</button>
+                        <button type="button" id="btnBorrarTodo">Borrar Todos los Datos</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="summary-section">
+                <h4>Resumen y Verificación</h4>
+
+                <h5>Total de Cheques</h5>
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Concepto</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Total Cheques</td>
+                            <td id="totalCheques" class="total-value">0.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5>Total de Moneda Contada</h5>
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Concepto</th>
+                            <th>Valor Contado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Total Billetes y Monedas</td>
+                            <td id="totalBilletesMonedas" class="total-value">0.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="summary-difference-container">
+                    <label for="diferenciaTotalFinal">Diferencia Final (Teórico - Ingresado):</label>
+                    <input type="text" id="diferenciaTotalFinal" name="diferenciaTotalFinal" readonly value="0.00">
+                </div>
+            </div>
+
+            <div class="saved-cuadres-section">
+                <h4>Cuadres Guardados</h4>
+                <div id="savedCuadresContainer" class="saved-cuadres-container">
+                </div>
+            </div>
+
+            <div class="print-view-section">
+                <h4>Vista de Cuadres para Impresión</h4>
+                <div class="button-group">
+                    <button type="button" id="btnPrintCuadres">Imprimir Cuadres</button>
+                </div>
+                <div id="printCuadresContainer" class="print-view-container">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+      </div>
+    </div>
+    <div id="settingsOverlay" class="settings-overlay" aria-hidden="true">
+      <section class="settings-panel">
+        <button type="button" class="window-close" id="closeSettingsBtn" aria-label="Cerrar">&times;</button>
+        <h2>Ajustes de apariencia</h2>
+        <div class="settings-row">
+          <div class="form-group">
+            <label for="customBrandInput">Texto principal personalizado</label>
+            <input type="text" id="customBrandInput" maxlength="42" placeholder="Ejemplo: M.V.C.G">
+          </div>
+          <button type="button" class="settings-save" id="saveBrandBtn">Guardar frase</button>
+        </div>
+        <h3 class="theme-heading">Colección Ejecutiva</h3>
+        <div class="theme-grid" id="themesMen"></div>
+        <h3 class="theme-heading">Colección Elegante</h3>
+        <div class="theme-grid" id="themesWomen"></div>
+      </section>
+    </div>
+    <div id="cheques-modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('cheques')">&times;</span>
+            <h4>Apartado de Cheques</h4>
+            <div id="chequeFieldsContainer">
+            </div>
+            <div class="modal-button-group">
+                <button type="button" class="add-cheque-button" id="btnAddCheque">Añadir Cheque</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="denominations-modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('denominations')">&times;</span>
+            <h4>Billetes y Monedas</h4>
+            <p style="text-align: center;">Ingresa la cantidad de piezas de cada denominación.</p>
+            <div id="denominationFields" class="cash-denomination-content">
+            </div>
+            <div class="modal-button-group">
+                <button type="button" onclick="closeModal('denominations')">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="depositsOverlay" class="tool-overlay" aria-hidden="true">
+      <section class="tool-window" aria-label="Cuadre Depositos Varios">
+        <div class="tool-titlebar"><button class="traffic close" type="button" onclick="closeDepositsTool()" aria-label="Cerrar"></button><button class="traffic min" type="button" onclick="closeDepositsTool()" aria-label="Minimizar"></button></div>
+        <iframe id="depositsFrame" class="tool-frame" title="Cuadre Depositos Varios"></iframe>
+      </section>
+    </div>
+
+    <div id="slbOverlay" class="slb-overlay" aria-hidden="true">
+      <section class="slb-window" aria-label="Distribucion de Trabajo SLB">
+        <div class="tool-titlebar slb-controls"><button class="traffic close" type="button" onclick="closeSlbTool()" aria-label="Cerrar"></button><button class="traffic min" type="button" onclick="closeSlbTool()" aria-label="Minimizar"></button></div>
+        <iframe id="slbFrame" class="slb-frame" title="Distribucion de Trabajo SLB"></iframe>
+      </section>
+    </div>
+    <nav class="mac-dock-wrap" aria-label="Herramientas">
+      <div class="mac-dock">
+        <button class="dock-item" type="button" data-label="Cuadre Bancos" onclick="openMainFromDock()">▤</button>
+        <button class="dock-item" type="button" data-label="Depositos Varios" onclick="openDepositsTool()">◫</button>
+        <button class="dock-item" type="button" data-label="Distribucion SLB" onclick="openSlbTool()">▦</button>
+        <span class="dock-separator"></span>
+        <button class="dock-item" type="button" data-label="Ajustes" onclick="openSettingsFromDock()">⚙</button>
+      </div>
+    </nav>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://unpkg.com/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+
+    <script>
+
+
+
+
+        const slbAppSource = "<!doctype html>\n<html lang=\"es\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<meta name=\"author\" content=\"Marco Vinicio Cifuentes\">\n<meta name=\"description\" content=\"Sistema SLB para distribución semanal, ausencias, coberturas y reportes de auditoría\">\n<title>Distribución de Trabajo SLB</title>\n<style>\n:root{--bg:#07111f;--panel:rgba(16,36,59,.84);--line:rgba(255,255,255,.13);--text:#e6eef8;--muted:#9fb1c5;--blue:#2388ff;--cyan:#25b6d2;--green:#079a76;--purple:#8b5cf6;--orange:#d97706;--red:#d14343;--navy:#102a43;--shadow:0 16px 42px rgba(0,0,0,.38)}\n*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;padding-bottom:105px;background:radial-gradient(circle at 8% 4%,#153a68 0,transparent 31%),radial-gradient(circle at 92% 8%,#34255d 0,transparent 30%),radial-gradient(circle at 45% 100%,#113c38 0,transparent 34%),var(--bg);color:var(--text);font:14px Inter,\"Segoe UI\",Roboto,Arial,sans-serif}.locked{overflow:hidden}\n.glass{background:var(--panel);border:1px solid var(--line);border-radius:21px;box-shadow:var(--shadow),inset 0 1px rgba(255,255,255,.06);backdrop-filter:blur(22px) saturate(150%);-webkit-backdrop-filter:blur(22px) saturate(150%)}\n.login{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;background:rgba(4,9,17,.93);backdrop-filter:blur(25px)}.login.hide{display:none}.login-card{width:min(430px,92%);padding:32px;text-align:center}.login-card h1{margin:0 0 6px}.error{color:#ff8585;min-height:20px;margin-top:8px}\n.header{padding:25px;text-align:center;border-radius:0 0 24px 24px!important;border-top:0}.header h1{margin:0;background:linear-gradient(90deg,#69d2ff,#a888ff,#ff8292);color:transparent;background-clip:text;-webkit-background-clip:text}.header p{margin:6px 0 0;color:var(--muted)}\nmain{max-width:1520px;margin:20px auto;padding:0 15px}.panel{padding:21px;margin-bottom:18px;overflow:hidden}h2{margin:0 0 13px;padding-bottom:10px;border-bottom:1px solid var(--line);font-size:20px;color:#fff}h3{margin:0 0 8px}.sub{color:var(--muted);line-height:1.5}.controls{display:flex;gap:12px;flex-wrap:wrap;align-items:end}.field{min-width:220px;flex:1}.field label,.label{display:block;margin-bottom:6px;color:var(--muted);font-weight:650}input[type=date],input[type=password],textarea,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;background:rgba(0,0,0,.25);color:#fff;color-scheme:dark}textarea{min-height:68px;resize:vertical}.btn{padding:11px 17px;border:1px solid rgba(255,255,255,.2);border-radius:11px;background:linear-gradient(135deg,var(--blue),#4f46e5);color:#fff;font-weight:700;cursor:pointer;transition:.2s}.btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.32)}.btn.red{background:linear-gradient(135deg,#a8173f,#df3d50)}.btn.gray{background:linear-gradient(135deg,#3e4c5f,#65758a)}.btn:disabled{opacity:.42;cursor:not-allowed;transform:none}\n.option-grid,.summary-grid,.rule-grid,.coord-grid,.absence-grid{display:grid;gap:12px}.option-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin:15px 0}.option{display:flex;gap:11px;padding:14px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.035)}.option.disabled{opacity:.45}.option input{width:19px;height:19px;accent-color:var(--blue)}.option small{display:block;margin-top:4px;color:var(--muted);line-height:1.35}.summary-grid{grid-template-columns:repeat(6,1fr)}.summary{padding:14px;text-align:center;border-radius:15px;background:linear-gradient(135deg,#176dcc,#469cff);box-shadow:0 5px 18px rgba(0,0,0,.26)}.summary:nth-child(2){background:linear-gradient(135deg,#087f5b,#18b68b)}.summary:nth-child(3){background:linear-gradient(135deg,#b35c00,#f29a2e)}.summary:nth-child(4){background:linear-gradient(135deg,#7134b8,#a95fe8)}.summary:nth-child(5){background:linear-gradient(135deg,#b62f49,#ec5e72)}.summary:nth-child(6){background:linear-gradient(135deg,#3b4b5f,#718299)}.summary b{display:block;font-size:27px;margin-top:5px}.note{padding:12px;margin:13px 0;border-left:4px solid var(--cyan);border-radius:8px;background:rgba(37,182,210,.1);color:#d2dfed;line-height:1.45}.note.warning{border-left-color:#f09a33;background:rgba(240,154,51,.1)}.note.error-note{border-left-color:var(--red);background:rgba(209,67,67,.1)}\n.rule-grid{grid-template-columns:repeat(auto-fit,minmax(270px,1fr))}.rule{padding:14px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.03)}.rule b{color:#8edbff}.rule p{margin:6px 0 0;color:#c8d6e6;line-height:1.45}\n.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:rgba(0,0,0,.18)}table{width:100%;border-collapse:collapse;min-width:1120px}th{padding:11px;background:rgba(255,255,255,.06);color:#fff;text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.03em}td{padding:11px;border-top:1px solid var(--line);vertical-align:top;color:#cddaea;line-height:1.4}.center{text-align:center}.badge{display:inline-block;padding:5px 9px;border-radius:11px;color:#fff;font-size:11px;font-weight:750}.gt{background:#087f5b}.bam{background:#176dcc}.dep{background:#7c3aed}.ob{background:#a43b87}.mix{background:#c06b06}.special{background:#b4233e}.ok{color:#79e5b8;font-weight:700}.bad{color:#ff8c8c;font-weight:700}.person-name{font-weight:700;color:#fff}.small{font-size:11px;color:var(--muted)}\n.week-table th,.week-table td{text-align:center}.week-table td:first-child{text-align:left}.cell-process{min-width:140px}.solo-row{background:rgba(35,136,255,.07)}\n.absence-grid{grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}.absence-card{padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.035)}.absence-card.active{border-color:#ff7184;box-shadow:0 0 0 1px rgba(255,113,132,.22)}.absence-head{display:flex;gap:10px;align-items:center;margin-bottom:10px}.absence-head input{width:19px;height:19px;accent-color:var(--red)}.coverage{margin-top:9px;padding:9px;border-radius:9px;background:rgba(7,154,118,.12);color:#baf5e3}.coord-grid{grid-template-columns:repeat(3,1fr)}.coord{padding:18px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.035)}.role{color:#8edbff;text-transform:uppercase;font-size:11px;font-weight:800;letter-spacing:.06em}.coord ul{padding-left:18px}.coord li{margin:7px 0;line-height:1.4}\n.dock{position:fixed;z-index:100;left:50%;bottom:18px;transform:translateX(-50%);display:flex;gap:11px;padding:11px 20px;border:1px solid rgba(255,255,255,.18);border-radius:22px;background:rgba(7,16,29,.91);box-shadow:0 12px 38px rgba(0,0,0,.5);backdrop-filter:blur(20px)}.footer{text-align:center;color:var(--muted);padding:15px}.signature{display:none}.print-only{display:none}\n@media(max-width:900px){.summary-grid{grid-template-columns:repeat(3,1fr)}.coord-grid{grid-template-columns:1fr}.dock{width:calc(100% - 18px);justify-content:center;flex-wrap:wrap}.btn{padding:9px 11px}}\n@page{size:A4 landscape;margin:10mm 9mm 13mm}@media print{body{background:#fff;color:#17202a;padding:0;font:9px Arial,sans-serif}.login,.dock,.option-grid,.no-print{display:none!important}.print-only{display:block}.header{background:#fff!important;box-shadow:none;border-bottom:3px solid var(--navy);padding:4px 0 8px}.header h1{color:var(--navy);background:none;font-size:19px}.header p{color:#52606d}.glass{background:#fff;box-shadow:none;border:1px solid #b8c2cc;border-radius:4px;backdrop-filter:none}main{max-width:none;margin:6px 0;padding:0}.panel{padding:8px;margin-bottom:7px;overflow:visible;break-inside:auto}h2{font-size:13px;color:var(--navy);border-bottom:2px solid #d6dee6;margin-bottom:6px;padding-bottom:4px}.sub,.small{color:#52606d}.note{color:#263746;background:#eef5f9;border-left-color:var(--navy);padding:6px;margin:5px 0}.summary-grid{grid-template-columns:repeat(6,1fr);gap:4px}.summary{background:#eef2f6!important;color:#102a43;border:1px solid #aab7c4;padding:5px;box-shadow:none}.summary b{font-size:16px}.table-wrap{overflow:visible;border:0}table{min-width:0;table-layout:fixed}th{background:var(--navy)!important;color:#fff;padding:4px;print-color-adjust:exact;-webkit-print-color-adjust:exact}td{color:#17202a;padding:4px;border:1px solid #c8d1da;line-height:1.22;overflow-wrap:anywhere}.badge{print-color-adjust:exact;-webkit-print-color-adjust:exact}.audit-break{break-before:page}.absence-grid{grid-template-columns:repeat(3,1fr);gap:5px}.absence-card{padding:6px;color:#17202a;background:#fff}.absence-card:not(.active){display:none}.absence-card input,.absence-card textarea{display:none}.coverage{color:#17202a;background:#edf7f4}.coord-grid{grid-template-columns:repeat(3,1fr);gap:5px}.coord{padding:7px;color:#17202a;background:#fff}.role{color:#17202a}.signature{display:block;text-align:center;break-inside:avoid;margin-top:18px}.signature-line{width:320px;border-top:1px solid #17202a;margin:42px auto 5px}.print-footer{position:fixed;bottom:0;left:0;right:0;text-align:center;border-top:1px solid #9aa5b1;padding-top:3px;color:#52606d;font-size:8px}.footer{display:none}}\n\n/* Reporte laboral compacto de una sola hoja */\n.labor-print{display:none}\n@media print{\n  @page{size:A4 landscape;margin:6mm}\n  body{font-size:7.1px!important}\n  body>*:not(#login):not(main){display:none!important}\n  main>.panel,main>.footer,main>.print-footer{display:none!important}\n  main{margin:0!important;padding:0!important}\n  #laborPrint{display:block!important;border:0!important;background:#fff!important;color:#18212b!important;box-shadow:none!important;padding:0!important;margin:0!important}\n  .labor-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #263746;padding:0 0 4px;margin-bottom:4px}\n  .labor-head h1{font:700 14px Arial;margin:0;color:#18212b;letter-spacing:.08em}\n  .labor-head p{font:700 8px Arial;margin:1px 0 0;color:#556575}\n  .labor-meta{text-align:right;display:flex;flex-direction:column;gap:1px;font-size:7px}\n  .labor-summary{display:flex;gap:4px;margin:3px 0 4px}\n  .labor-summary span{flex:1;border:1px solid #aeb9c4;border-radius:2px;padding:2px 4px;text-align:center;background:#f4f6f8;font-weight:700}\n  #laborPrint h2{font:700 8px Arial;color:#18212b;border:0;margin:3px 0 2px;padding:0;text-transform:uppercase;letter-spacing:.04em}\n  .labor-table{width:100%;min-width:0!important;border-collapse:collapse;table-layout:fixed;font-size:6.7px;line-height:1.08}\n  .labor-table th{background:#263746!important;color:#fff!important;padding:2px 3px!important;text-transform:uppercase;font-size:6.4px;letter-spacing:.02em}\n  .labor-table td{border:1px solid #b9c2cb!important;padding:1.7px 3px!important;color:#18212b!important;vertical-align:middle!important;overflow-wrap:anywhere}\n  .labor-table th:nth-child(1){width:19%}.labor-table th:nth-child(2){width:5%}.labor-table th:nth-child(3){width:15%}.labor-table th:nth-child(4){width:51%}.labor-table th:nth-child(5){width:10%}\n  .labor-absence{margin-top:3px;break-inside:avoid}\n  .labor-absence .labor-table th:nth-child(1){width:24%}.labor-absence .labor-table th:nth-child(2){width:7%}.labor-absence .labor-table th:nth-child(3){width:39%}.labor-absence .labor-table th:nth-child(4){width:30%}\n  .labor-sign{text-align:center;width:260px;margin:10px auto 0;font-size:7px;break-inside:avoid}\n  .labor-sign span{display:block}.labor-line{border-top:1px solid #18212b;margin-bottom:2px}\n}\n</style>\n\n<style id=\"mvcg-host-adapter\">\n:root{--host-a:#0f172a;--host-b:#2563eb;--host-c:#38bdf8;--host-bg:#020617}\nbody{background:radial-gradient(circle at 8% 6%,var(--host-a),transparent 34%),radial-gradient(circle at 92% 8%,var(--host-b),transparent 34%),radial-gradient(circle at 45% 100%,var(--host-c),transparent 38%),var(--host-bg)!important;background-size:220% 220%!important;animation:mvcgFlow 25s ease-in-out infinite!important}\n@keyframes mvcgFlow{0%,100%{background-position:0% 50%,100% 50%,50% 100%}50%{background-position:100% 50%,0% 50%,50% 0%}}\n.glass,.panel,.header{background:rgba(15,23,42,.60)!important;border-color:rgba(255,255,255,.15)!important;backdrop-filter:blur(25px) saturate(140%)!important}\n.header h1{background:linear-gradient(90deg,var(--host-b),var(--host-c),#fff)!important;background-clip:text!important;-webkit-background-clip:text!important;color:transparent!important}\n.btn{background:linear-gradient(135deg,var(--host-a),var(--host-b))!important}.dock{background:rgba(8,12,25,.62)!important}\n@media print{body{animation:none!important;background:#fff!important}}\n</style>\n</head>\n<body>\n<header class=\"header glass\"><h1>Distribución de Trabajo SLB</h1><p>Planificación semanal, procedimientos, ausencias, cobertura y reporte laboral</p></header>\n<main>\n<section class=\"panel glass\"><h2>1. Configuración operativa</h2><div class=\"controls\"><div class=\"field\"><label for=\"fecha\">Fecha operativa</label><input id=\"fecha\" type=\"date\"></div><button class=\"btn\" id=\"btnActualizar\">Calcular distribución</button></div><div class=\"option-grid\"><div class=\"option\" id=\"boxTransfer\"><input id=\"optTransfer\" type=\"checkbox\"><div><b>Transferir CHN y Cuscatlán a Procesos Especiales</b><small>Disponible lunes y martes. El módulo central queda liberado para apoyo.</small></div></div><div class=\"option\" id=\"boxMonday\"><input id=\"optMonday\" type=\"checkbox\"><div><b>Refuerzo de Óbulos el lunes</b><small>Convierte un módulo de Remesas BAM en un módulo adicional de Óbulos.</small></div></div><div class=\"option\" id=\"boxTuesday\"><input id=\"optTuesday\" type=\"checkbox\"><div><b>Usar módulo liberado para Remesas G&amp;T</b><small>Disponible el martes cuando CHN/Cuscatlán fue transferido.</small></div></div></div><div class=\"note\" id=\"statusMessage\"></div><div class=\"summary-grid\"><div class=\"summary\">Remesas G&amp;T<b id=\"countGT\">0</b></div><div class=\"summary\">Remesas BAM<b id=\"countBAM\">0</b></div><div class=\"summary\">Depósitos BAM<b id=\"countDEP\">0</b></div><div class=\"summary\">Óbulos<b id=\"countOB\">0</b></div><div class=\"summary\">CHN/Cuscatlán<b id=\"countMIX\">0</b></div><div class=\"summary\">Ausencias<b id=\"countABS\">0</b></div></div></section>\n<section class=\"panel glass\"><h2>2. Reglas verificadas de la distribución</h2><div class=\"rule-grid\"><article class=\"rule\"><b>Cuota diaria obligatoria</b><p>Los 12 módulos centrales se distribuyen en 4 de Remesas G&amp;T, 3 de Remesas BAM, 2 de Depósitos BAM, 2 de Recuento de Óbulos y 1 de CHN/Cuscatlán.</p></article><article class=\"rule\"><b>Módulos no compartidos</b><p>Los módulos 7, 8, 9, 10 y 16 reciben los cinco procesos diferentes entre lunes y viernes, sin repetir ninguno durante la misma semana.</p></article><article class=\"rule\"><b>Módulos compartidos</b><p>Los módulos 1, 2, 3, 4, 11, 12 y 13 completan las cantidades diarias restantes. Su secuencia evita repetir el mismo proceso en días laborales consecutivos.</p></article><article class=\"rule\"><b>Continuidad viernes a lunes</b><p>La rotación utiliza un índice continuo de días laborales. El proceso asignado el lunes es diferente al proceso del viernes anterior.</p></article></div><div class=\"note warning\" id=\"validationMessage\"></div></section>\n<section class=\"panel glass\"><h2>3. Matriz diaria de módulos y procedimientos</h2><div class=\"table-wrap\"><table><thead><tr><th style=\"width:6%\">Módulo</th><th style=\"width:9%\">Tipo</th><th style=\"width:10%\">Banco</th><th style=\"width:14%\">Proceso</th><th style=\"width:27%\">Procedimiento detallado</th><th style=\"width:16%\">Personal programado</th><th style=\"width:18%\">Cobertura efectiva</th></tr></thead><tbody id=\"dailyBody\"></tbody></table></div></section>\n<section class=\"panel glass\"><h2>4. Verificación semanal de rotación</h2><p class=\"sub\">Esta tabla permite comprobar visualmente que los módulos no compartidos cumplen cinco procesos diferentes. La columna de validación señala cualquier incumplimiento.</p><div class=\"table-wrap\"><table class=\"week-table\"><thead><tr><th>Módulo</th><th>Lunes</th><th>Martes</th><th>Miércoles</th><th>Jueves</th><th>Viernes</th><th>Validación</th></tr></thead><tbody id=\"weekBody\"></tbody></table></div></section>\n<section class=\"panel glass\"><h2>5. Procesos Especiales</h2><div class=\"note\">Los módulos 14, 15, 17 y 19 trabajan Ficohsa, Interbanco y Promerica. Si se activa la transferencia, también reciben CHN y Cuscatlán.</div><div class=\"table-wrap\"><table><thead><tr><th>Módulo</th><th>Persona asignada</th><th>Bancos titulares</th><th>Actividad operativa</th><th>Carga transferida</th></tr></thead><tbody id=\"specialBody\"></tbody></table></div></section>\n<section class=\"panel glass audit-break\"><h2>6. Registro de ausencias, justificaciones y cobertura</h2><div class=\"note\"><b>Regla automática:</b> si la persona ausente pertenece a un módulo compartido, cubre su compañero disponible. Si pertenece a un módulo individual, cubre una persona libre procedente de un módulo compartido. Una persona ausente nunca puede ser asignada como cobertura.</div><div id=\"absenceList\" class=\"absence-grid\"></div></section>\n<section class=\"panel glass\"><h2>7. Ausencias y justificaciones</h2><div class=\"table-wrap\"><table><thead><tr><th>Persona ausente</th><th>Módulo</th><th>Justificación</th><th>Persona que cubre</th><th>Proceso cubierto</th><th>Estado</th></tr></thead><tbody id=\"incidentBody\"></tbody></table></div></section>\n<section class=\"panel glass\"><h2>8. Coordinación y responsabilidades</h2><div class=\"coord-grid\"><article class=\"coord\"><div class=\"role\">Coordinación operativa y digitación</div><h3>William</h3><ul><li>Supervisar módulos 1, 2, 3, 4, 7 y 8.</li><li>Controlar paquetes, cuadres, incidencias y continuidad operativa.</li><li>Verificar cumplimiento de procesos y apoyar redistribuciones.</li></ul></article><article class=\"coord\"><div class=\"role\">Coordinación operativa y digitación</div><h3>Juan Carlos</h3><ul><li>Supervisar módulos 9, 10, 11, 12 y 13.</li><li>Validar registros, revisar descuadres y controlar calidad.</li><li>Dar seguimiento a incidencias y necesidades de cobertura.</li></ul></article><article class=\"coord\"><div class=\"role\">Coordinación general y procesos especiales</div><h3>Marco Vinicio Cifuentes</h3><ul><li>Coordinar módulos 14, 15, 16, 17 y 18.</li><li>Verificar cuotas, rotación semanal, transferencias y refuerzos.</li><li>Autorizar y documentar coberturas e incidencias operativas.</li><li>Supervisar el reporte final de auditoría.</li></ul></article></div><div class=\"signature\"><div class=\"signature-line\"></div><b>Marco Vinicio Cifuentes</b><br>Coordinador senior sala bancos</div></section>\n<section id=\"laborPrint\" class=\"labor-print print-only\">\n  <div class=\"labor-head\">\n    <div><h1>REPORTE LABORAL</h1><p>Distribución de Trabajo SLB</p></div>\n    <div class=\"labor-meta\"><b id=\"lpDate\"></b><span id=\"lpGenerated\"></span></div>\n  </div>\n  <div class=\"labor-summary\" id=\"lpSummary\"></div>\n  <h2>Asignación de personal y actividad a realizar</h2>\n  <table class=\"labor-table\">\n    <thead><tr><th>Persona</th><th>Mód.</th><th>Proceso</th><th>Actividad asignada</th><th>Estado</th></tr></thead>\n    <tbody id=\"lpPeople\"></tbody>\n  </table>\n  <div id=\"lpAbsenceBlock\" class=\"labor-absence\">\n    <h2>Personal ausente y justificación</h2>\n    <table class=\"labor-table\"><thead><tr><th>Persona ausente</th><th>Mód.</th><th>Justificación</th><th>Cobertura asignada</th></tr></thead><tbody id=\"lpAbsences\"></tbody></table>\n  </div>\n  <div class=\"labor-sign\"><div class=\"labor-line\"></div><b>Marco Vinicio Cifuentes</b><span>Coordinador senior sala bancos</span></div>\n</section>\n<div class=\"print-only print-footer\">Distribución de Trabajo SLB | Reporte laboral | <span id=\"printMeta\"></span> | m.v.c.g</div><div class=\"footer\"><b>Sala Bancos Quetzaltenango</b><br>Marco Vinicio Cifuentes · m.v.c.g</div>\n</main>\n<div class=\"dock\"><button class=\"btn\" id=\"btnGenerate\">Actualizar matrices</button><button class=\"btn gray\" id=\"btnClear\">Limpiar ausencias</button><button class=\"btn red\" id=\"btnPDF\">Generar reporte laboral PDF</button></div>\n<script>\n(function(){\n'use strict';\nconst MODULES=[\n {n:1,p:'Nora Liset Barrios López',a:'Andrea Viviana Alvarado Alvarado',shared:true},\n {n:2,p:'Iris Belinda López Velásquez',a:'Norma Roselda Lem Toc',shared:true},\n {n:3,p:'Dany Otoniel Son Sajquim',a:'Lorena Pérez Puy',shared:true},\n {n:4,p:'Karla Jeannette Sánchez Escobar',a:'Yefty Orlando Chávez Cacatzún',shared:true},\n {n:7,p:'Ana Lucía Barrios Gramajo',a:'',shared:false},\n {n:8,p:'Mayra Julieta Agustín Morales',a:'',shared:false},\n {n:9,p:'Enrique Manuel Vicente Sajché',a:'',shared:false},\n {n:10,p:'Gerson Alberto Chaj Macario',a:'',shared:false},\n {n:11,p:'Jeniffer María Contreras Arias',a:'Yuscely Dalila Guzmán Tomás',shared:true},\n {n:12,p:'Celma Azucena Say Ortiz',a:'Julio César Velásquez Pérez',shared:true},\n {n:13,p:'Axel Iván Mazariegos Hidalgo',a:'Victoria Emilia Villagrán Morales',shared:true},\n {n:16,p:'Yoselin Paola Xulu Lucas',a:'',shared:false}\n];\nconst SPECIAL=[{n:14,p:'Débora Victoria López Ramírez'},{n:15,p:'Britney Nohemí de León Matín'},{n:17,p:'María Benita Cahuex Juárez'},{n:19,p:'Iris Martina Más Chaclán'}];\nconst PROCESS={\n gt:{id:'gt',bank:'G&T',name:'Remesas G&T',cls:'gt',procedure:'Recibir remesas, validar documentos y sellos, clasificar valores, efectuar recuento, cuadrar contra el detalle, registrar diferencias y preparar el paquete para entrega.'},\n bam:{id:'bam',bank:'BAM',name:'Remesas BAM',cls:'bam',procedure:'Recibir y clasificar remesas BAM, validar marchamos y documentos, efectuar conteo y cuadre, reportar diferencias y preparar la entrega correspondiente.'},\n dep:{id:'dep',bank:'BAM',name:'Depósitos BAM',cls:'dep',procedure:'Validar boletas y datos del depósito, clasificar efectivo y documentos, efectuar conteo, comparar contra el valor declarado, registrar el resultado y preparar el depósito.'},\n ob:{id:'ob',bank:'BAM',name:'Recuento de Óbulos',cls:'ob',procedure:'Verificar identificación de óbulos, abrir y clasificar contenido, efectuar recuento, documentar diferencias, completar el control y entregar el resultado para cuadre.'},\n mix:{id:'mix',bank:'CHN + Cuscatlán',name:'Remesas CHN y Cuscatlán',cls:'mix',procedure:'Separar remesas por banco, validar documentación, efectuar conteo y cuadre individual, registrar diferencias y preparar cada remesa bajo su control correspondiente.'}\n};\nconst SOLO_MODULES=MODULES.filter(m=>!m.shared);\nconst SHARED_MODULES=MODULES.filter(m=>m.shared);\nconst SOLO_SEQUENCE=['gt','bam','dep','ob','mix'];\nconst SHARED_SEQUENCE=['gt','bam','gt','dep','gt','bam','ob'];\nconst DAILY_TARGET={gt:4,bam:3,dep:2,ob:2,mix:1};\nconst DAYS=['Lunes','Martes','Miércoles','Jueves','Viernes'];\nconst $=id=>document.getElementById(id);\nlet absences={};\nlet lastRenderState={map:null,coverage:null,incidents:[],date:null};\nfunction escapeHTML(value){return String(value??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;')}\nfunction parseDate(value){const p=value.split('-').map(Number);return new Date(p[0],p[1]-1,p[2],12,0,0)}\nfunction startOfWorkWeek(date){const d=new Date(date);const day=d.getDay();const delta=day===0?-6:1-day;d.setDate(d.getDate()+delta);d.setHours(12,0,0,0);return d}\nfunction businessIndex(date){const anchor=new Date(2026,0,5,12);const days=Math.round((date-anchor)/86400000);const weeks=Math.floor(days/7);const remainder=days-weeks*7;return weeks*5+Math.min(Math.max(remainder,0),4)}\nfunction weekIndex(date){const anchor=new Date(2026,0,5,12);return Math.floor((startOfWorkWeek(date)-anchor)/(7*86400000))}\nfunction cloneProcess(id){return {...PROCESS[id]}}\n/* Core distribution: each solo module receives all five categories each Monday-Friday.\n   The five solo modules consume exactly one of each category per day.\n   The seven shared modules then consume 3 GT, 2 BAM, 1 DEP and 1 OB.\n   Combined total is always 4 GT, 3 BAM, 2 DEP, 2 OB and 1 MIX. */\nfunction buildBaseDay(date){\n const weekday=date.getDay()-1;\n const week=weekIndex(date);\n const result=new Map();\n SOLO_MODULES.forEach((m,i)=>{const id=SOLO_SEQUENCE[(i+weekday+week)%5];result.set(m.n,cloneProcess(id))});\n SHARED_MODULES.forEach((m,i)=>{const id=SHARED_SEQUENCE[(i+businessIndex(date))%7];result.set(m.n,cloneProcess(id))});\n return result;\n}\nfunction applyOptions(date,map){\n const day=date.getDay();\n if(day===1&&$('optMonday').checked){const candidate=MODULES.find(m=>map.get(m.n).id==='bam');if(candidate)map.set(candidate.n,{...PROCESS.ob,name:'Recuento de Óbulos - refuerzo lunes'})}\n if((day===1||day===2)&&$('optTransfer').checked){const candidate=MODULES.find(m=>map.get(m.n).id==='mix');if(candidate){if(day===2&&$('optTuesday').checked)map.set(candidate.n,{...PROCESS.gt,name:'Remesas G&T - módulo liberado'});else map.set(candidate.n,{id:'support',bank:'Apoyo',name:'Clasificación y unificación',cls:'special',procedure:'Apoyar clasificación, unificación, control documental y continuidad de la carga transferida a Procesos Especiales.'})}}\n return map;\n}\nfunction countProcesses(map){const c={gt:0,bam:0,dep:0,ob:0,mix:0,support:0};map.forEach(p=>{if(c[p.id]!==undefined)c[p.id]++});return c}\nfunction validateBaseWeek(date){\n const monday=startOfWorkWeek(date);const errors=[];const weekMaps=[];\n for(let d=0;d<5;d++){const current=new Date(monday);current.setDate(monday.getDate()+d);const map=buildBaseDay(current);weekMaps.push(map);const c=countProcesses(map);Object.keys(DAILY_TARGET).forEach(k=>{if(c[k]!==DAILY_TARGET[k])errors.push(DAYS[d]+': '+k+' esperado '+DAILY_TARGET[k]+', obtenido '+c[k])})}\n SOLO_MODULES.forEach(m=>{const values=weekMaps.map(x=>x.get(m.n).id);if(new Set(values).size!==5)errors.push('Módulo '+m.n+' no tiene cinco procesos distintos: '+values.join(', '))});\n MODULES.forEach(m=>{for(let d=1;d<5;d++)if(weekMaps[d-1].get(m.n).id===weekMaps[d].get(m.n).id)errors.push('Módulo '+m.n+' repite entre '+DAYS[d-1]+' y '+DAYS[d])});\n const friday=new Date(monday);friday.setDate(monday.getDate()-3);const prior=buildBaseDay(friday);MODULES.forEach(m=>{if(prior.get(m.n).id===weekMaps[0].get(m.n).id)errors.push('Módulo '+m.n+' repite viernes anterior y lunes')});\n return {errors,weekMaps,monday};\n}\nfunction optionAvailability(date){const day=date.getDay();const config=[['optTransfer','boxTransfer',day===1||day===2],['optMonday','boxMonday',day===1],['optTuesday','boxTuesday',day===2&&$('optTransfer').checked]];config.forEach(([input,box,enabled])=>{const el=$(input);el.disabled=!enabled;$(box).classList.toggle('disabled',!enabled);if(!enabled)el.checked=false})}\nfunction absenceKey(){return 'slb_absences_'+$('fecha').value}\nfunction isAbsent(name){return !!absences[name]?.active}\nfunction allPeople(){const list=[];MODULES.forEach(m=>{list.push({name:m.p,module:m.n,shared:m.shared});if(m.a)list.push({name:m.a,module:m.n,shared:true})});SPECIAL.forEach(m=>list.push({name:m.p,module:m.n,shared:false,special:true}));return list}\nfunction buildAbsenceCards(){const people=allPeople();$('absenceList').innerHTML=people.map((p,i)=>'<article class=\"absence-card\" data-card=\"'+i+'\"><div class=\"absence-head\"><input type=\"checkbox\" data-absence=\"'+i+'\"><div><div class=\"person-name\">'+escapeHTML(p.name)+'</div><div class=\"small\">Módulo '+p.module+' · '+(p.special?'Proceso especial':p.shared?'Módulo compartido':'Módulo no compartido')+'</div></div></div><label class=\"label\">Justificación de ausencia</label><textarea data-justification=\"'+i+'\" placeholder=\"Ingrese permiso, suspensión, cita, observación o motivo...\"></textarea><div class=\"coverage\" data-coverage=\"'+i+'\">Sin ausencia registrada.</div></article>').join('');$('absenceList').addEventListener('change',saveAbsenceInput);$('absenceList').addEventListener('input',saveAbsenceInput)}\nfunction saveAbsenceInput(event){const raw=event.target.dataset.absence??event.target.dataset.justification;if(raw===undefined)return;const i=Number(raw),person=allPeople()[i];absences[person.name]={active:document.querySelector('[data-absence=\"'+i+'\"]').checked,justification:document.querySelector('[data-justification=\"'+i+'\"]').value.trim()};localStorage.setItem(absenceKey(),JSON.stringify(absences));renderAll()}\nfunction loadAbsences(){try{absences=JSON.parse(localStorage.getItem(absenceKey())||'{}')}catch(e){absences={}}allPeople().forEach((p,i)=>{document.querySelector('[data-absence=\"'+i+'\"]').checked=isAbsent(p.name);document.querySelector('[data-justification=\"'+i+'\"]').value=absences[p.name]?.justification||''})}\nfunction plannedOccupants(date,map){const index=businessIndex(date),data=new Map();MODULES.forEach(m=>{const process=map.get(m.n);if(m.shared&&process.id==='ob')data.set(m.n,[m.p,m.a]);else if(m.shared)data.set(m.n,[(index+m.n)%2===0?m.a:m.p]);else data.set(m.n,[m.p] )});return data}\nfunction buildCoverage(date,map){\n const planned=plannedOccupants(date,map),coverage=new Map(),used=new Set();\n const availablePool=[];\n MODULES.filter(m=>m.shared).forEach(m=>{const occupied=planned.get(m.n);[m.p,m.a].forEach(name=>{if(!isAbsent(name)&&!occupied.includes(name))availablePool.push({name,home:m.n})})});\n function takeExternal(home){const c=availablePool.find(x=>x.home!==home&&!used.has(x.name));if(c){used.add(c.name);return c.name}return''}\n MODULES.forEach(m=>{const expected=planned.get(m.n);const missing=expected.filter(isAbsent);let effective=expected.filter(n=>!isAbsent(n));if(missing.length){missing.forEach(absentName=>{let replacement='';if(m.shared)replacement=[m.p,m.a].filter(Boolean).find(n=>n!==absentName&&!isAbsent(n))||'';if(!replacement)replacement=takeExternal(m.n);if(replacement&&!effective.includes(replacement))effective.push(replacement)})}coverage.set(m.n,{expected,effective,text:effective.length?effective.join(' y '):'COBERTURA PENDIENTE'})});\n return coverage;\n}\nfunction renderWeek(date){const check=validateBaseWeek(date);$('validationMessage').className='note '+(check.errors.length?'error-note':'');$('validationMessage').innerHTML=check.errors.length?'<b>Se detectaron inconsistencias:</b><br>'+check.errors.map(escapeHTML).join('<br>'):'<b>Validación correcta:</b> cuotas diarias exactas, cinco procesos distintos en todos los módulos no compartidos, sin repetición consecutiva y sin repetición de viernes a lunes.';\n $('weekBody').innerHTML=MODULES.map(m=>{const processNames=check.weekMaps.map(map=>map.get(m.n));const unique=new Set(processNames.map(p=>p.id)).size;const valid=m.shared?processNames.every((p,i)=>i===0||p.id!==processNames[i-1].id):unique===5;return '<tr class=\"'+(!m.shared?'solo-row':'')+'\"><td><b>Módulo '+m.n+'</b><div class=\"small\">'+(m.shared?'Compartido':'No compartido')+'</div></td>'+processNames.map(p=>'<td class=\"cell-process\"><span class=\"badge '+p.cls+'\">'+escapeHTML(p.name)+'</span></td>').join('')+'<td><span class=\"'+(valid?'ok':'bad')+'\">'+(valid?'Cumple':'Revisar')+'</span></td></tr>'}).join('')}\nfunction renderSpecial(date){const transfer=$('optTransfer').checked&&(date.getDay()===1||date.getDay()===2);const activities=['Recepción, depósito y preparación de Interbanco.','Recepción, depósito y preparación de Promerica.','Recepción, depósito y preparación de Ficohsa.','Clasificación, unificación y soporte operativo.'];$('specialBody').innerHTML=SPECIAL.map((m,i)=>'<tr><td><b>'+m.n+'</b></td><td>'+escapeHTML(m.p)+'</td><td><span class=\"badge special\">Ficohsa</span> <span class=\"badge special\">Interbanco</span> <span class=\"badge special\">Promerica</span></td><td>'+activities[(businessIndex(date)+i)%4]+'</td><td>'+(transfer?'<span class=\"badge mix\">CHN y Cuscatlán transferidos</span>':'Sin transferencia adicional')+'</td></tr>').join('')}\nfunction renderLaborPrint(date,map,coverage,incidents,counts){\n const peopleRows=[];\n MODULES.forEach(m=>{\n   const process=map.get(m.n),cov=coverage.get(m.n);\n   const allNames=[m.p,m.a].filter(Boolean);\n   allNames.forEach(name=>{\n     const absent=isAbsent(name);\n     let activity='';let status='';\n     if(absent){activity='Ausente. La actividad del módulo será atendida por: '+cov.text;status='Ausente'}\n     else if(cov.effective.includes(name)){activity=process.procedure;status='Asignado'}\n     else{activity='Apoyo operativo y cobertura según necesidad de la sala bancos.';status='Apoyo disponible'}\n     peopleRows.push({name,module:m.n,process:absent?'Ausencia registrada':process.name,activity,status});\n   });\n });\n SPECIAL.forEach((m,i)=>peopleRows.push({name:m.p,module:m.n,process:'Procesos Especiales',activity:'Atender Ficohsa, Interbanco y Promerica; realizar recepción, preparación, control documental, clasificación y unificación según la carga operativa.',status:'Asignado'}));\n $('lpPeople').innerHTML=peopleRows.map(r=>'<tr><td><b>'+escapeHTML(r.name)+'</b></td><td class=\"center\">'+r.module+'</td><td>'+escapeHTML(r.process)+'</td><td>'+escapeHTML(r.activity)+'</td><td>'+escapeHTML(r.status)+'</td></tr>').join('');\n $('lpAbsences').innerHTML=incidents.length?incidents.map(x=>'<tr><td><b>'+escapeHTML(x.name)+'</b></td><td class=\"center\">'+x.module+'</td><td>'+escapeHTML(x.why)+'</td><td>'+escapeHTML(x.cover)+'</td></tr>').join(''):'<tr><td colspan=\"4\" class=\"center\">No se registran ausencias para esta fecha.</td></tr>';\n $('lpDate').textContent='Fecha laboral: '+$('fecha').value;\n $('lpGenerated').textContent='Generado: '+new Date().toLocaleString('es-GT');\n $('lpSummary').innerHTML='<span>G&T: '+counts.gt+'</span><span>Remesas BAM: '+counts.bam+'</span><span>Depósitos BAM: '+counts.dep+'</span><span>Óbulos: '+counts.ob+'</span><span>CHN/Cuscatlán: '+($('optTransfer').checked?'Transferido':counts.mix)+'</span><span>Ausentes: '+incidents.length+'</span>';\n}\nfunction renderAll(){\n const date=parseDate($('fecha').value);optionAvailability(date);if(date.getDay()===0||date.getDay()===6){$('statusMessage').className='note error-note';$('statusMessage').innerHTML='<b>Fin de semana:</b> no hay operación asignada.';$('dailyBody').innerHTML='<tr><td colspan=\"7\" class=\"center\">Sin operación.</td></tr>';return}\n renderWeek(date);const base=buildBaseDay(date);const map=applyOptions(date,new Map(base));const counts=countProcesses(map);const coverage=buildCoverage(date,map);const incidents=[];\n $('dailyBody').innerHTML=MODULES.map(m=>{const p=map.get(m.n),cov=coverage.get(m.n),planned=cov.expected.join(' y ');[m.p,m.a].filter(Boolean).filter(isAbsent).forEach(name=>incidents.push({name,module:m.n,why:absences[name]?.justification||'Sin justificación registrada',cover:cov.text,process:p.name}));return '<tr><td class=\"center\"><b>'+m.n+'</b></td><td>'+(m.shared?'Compartido':'No compartido')+'</td><td><span class=\"badge '+p.cls+'\">'+escapeHTML(p.bank)+'</span></td><td><b>'+escapeHTML(p.name)+'</b></td><td>'+escapeHTML(p.procedure)+'</td><td>'+escapeHTML(planned)+'</td><td><b>'+escapeHTML(cov.text)+'</b></td></tr>'}).join('');\n $('incidentBody').innerHTML=incidents.length?incidents.map(x=>'<tr><td><span class=\"badge special\">AUSENTE</span> '+escapeHTML(x.name)+'</td><td>'+x.module+'</td><td>'+escapeHTML(x.why)+'</td><td>'+escapeHTML(x.cover)+'</td><td>'+escapeHTML(x.process)+'</td><td>'+(x.cover==='COBERTURA PENDIENTE'?'<span class=\"bad\">Pendiente</span>':'<span class=\"ok\">Cubierto</span>')+'</td></tr>').join(''):'<tr><td colspan=\"6\" class=\"center\">No se registran ausencias para esta fecha.</td></tr>';\n renderLaborPrint(date,map,coverage,incidents,counts);\n $('countGT').textContent=counts.gt;$('countBAM').textContent=counts.bam;$('countDEP').textContent=counts.dep;$('countOB').textContent=counts.ob;$('countMIX').textContent=$('optTransfer').checked?'Especial':counts.mix;$('countABS').textContent=incidents.length;\n $('statusMessage').className='note';$('statusMessage').innerHTML='<b>Distribución calculada:</b> '+incidents.length+' ausencia(s). '+(($('optTransfer').checked||$('optMonday').checked||$('optTuesday').checked)?'Existen opciones extraordinarias activas; las cuotas mostradas reflejan esos cambios.':'La matriz mantiene las cuotas base exactas.');\n allPeople().forEach((person,i)=>{const card=document.querySelector('[data-card=\"'+i+'\"]'),box=document.querySelector('[data-coverage=\"'+i+'\"]');card.classList.toggle('active',isAbsent(person.name));if(isAbsent(person.name)){const cov=coverage.get(person.module);box.textContent='Justificación: '+(absences[person.name]?.justification||'sin registrar')+'. Cobertura: '+(cov?cov.text:'Proceso especial sujeto a coordinación.')}else box.textContent='Sin ausencia registrada.'});\n renderSpecial(date);$('printMeta').textContent='Fecha operativa: '+$('fecha').value+' | Generado: '+new Date().toLocaleString('es-GT')\n}\nconst now=new Date();$('fecha').value=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');buildAbsenceCards();loadAbsences();renderAll();\n$('fecha').addEventListener('change',()=>{loadAbsences();renderAll()});['optTransfer','optMonday','optTuesday'].forEach(id=>$(id).addEventListener('change',renderAll));$('btnActualizar').onclick=renderAll;$('btnGenerate').onclick=renderAll;$('btnClear').onclick=()=>{absences={};localStorage.removeItem(absenceKey());loadAbsences();renderAll()};$('btnPDF').onclick=()=>{renderAll();setTimeout(()=>window.print(),150)};})();\n<\/script>\n</body>\n</html>";
+        function syncSlbTheme() {
+          const frame=document.getElementById('slbFrame'); if(!frame.contentDocument) return;
+          const cs=getComputedStyle(document.documentElement), root=frame.contentDocument.documentElement;
+          ['a','b','c','bg'].forEach(k=>root.style.setProperty('--host-'+k,cs.getPropertyValue('--theme-'+k)));
+        }
+        function openSlbTool() {
+          closeDepositsTool(); toggleWindow('appOverlay',false); toggleWindow('settingsOverlay',false);
+          const overlay=document.getElementById('slbOverlay'),frame=document.getElementById('slbFrame');
+          if(!frame.dataset.loaded){frame.srcdoc=slbAppSource;frame.dataset.loaded='true';frame.addEventListener('load',syncSlbTheme);}
+          overlay.classList.remove('closing');overlay.classList.add('active','opening');overlay.setAttribute('aria-hidden','false');
+          setTimeout(()=>overlay.classList.remove('opening'),650);syncSlbTheme();
+        }
+        function closeSlbTool() {const o=document.getElementById('slbOverlay');if(!o.classList.contains('active'))return;o.classList.remove('opening');o.classList.add('closing');setTimeout(()=>{o.classList.remove('active','closing');o.setAttribute('aria-hidden','true')},560)}
+
+        const depositsAppSource = "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>CUADRE DEPÓSITOS VARIOS</title>\n    <style>\n        /* Estilos CSS actualizados para un diseño más minimalista */\n        body {\n            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n            background-color: #1a1a1a; /* Gris oscuro minimalista */\n            color: #e0e0e0; /* Gris claro para el texto */\n            margin: 0;\n            padding: 20px;\n            display: flex;\n            flex-direction: column;\n            align-items: center;\n        }\n\n        h1 {\n            color: #e0e0e0; /* Mantener color de título principal */\n            text-align: center;\n            margin-bottom: 5px;\n            font-size: 2.5em;\n        }\n\n        h2.subtitle {\n            color: #00bfff; /* Cian-azulado para el subtítulo */\n            text-align: center;\n            margin-top: 0;\n            margin-bottom: 20px;\n            font-size: 1.5em;\n        }\n        \n        .datetime-container {\n            text-align: center;\n            margin-bottom: 30px;\n            padding: 10px;\n            background-color: #282828;\n            border-radius: 8px;\n            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);\n        }\n\n        .datetime-container #date-display {\n            font-size: 1.2em;\n            font-weight: bold;\n            color: #e0e0e0;\n        }\n        \n        .datetime-container #time-display {\n            font-size: 2em;\n            font-weight: bold;\n            color: #00bfff;\n        }\n\n        .container {\n            background-color: #282828; /* Un gris un poco más claro que el fondo */\n            padding: 30px;\n            border-radius: 8px;\n            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);\n            width: 90%;\n            max-width: 1200px;\n            margin-bottom: 30px;\n        }\n\n        .section-title {\n            color: #ff5252; /* Rojo suave para los títulos de sección */\n            border-bottom: 2px solid #ff5252;\n            padding-bottom: 10px;\n            margin-top: 20px;\n            margin-bottom: 20px;\n            font-size: 1.8em;\n            text-align: center;\n        }\n\n        .input-group {\n            margin-bottom: 15px;\n        }\n\n        .input-group label {\n            display: block;\n            margin-bottom: 5px;\n            font-weight: bold;\n            font-size: 1.1em;\n        }\n\n        .input-group input[type=\"text\"],\n        .input-group input[type=\"number\"] {\n            width: calc(100% - 22px);\n            padding: 10px;\n            border: 1px solid #444; /* Borde más sutil */\n            border-radius: 5px;\n            background-color: #333;\n            color: #FFF;\n            font-size: 1em;\n        }\n\n        .preview {\n            margin-top: 10px;\n            padding: 8px;\n            background-color: #333;\n            border-left: 4px solid #00bfff; /* Color de acento */\n            font-family: 'Courier New', Courier, monospace;\n            min-height: 20px;\n            color: #e0e0e0;\n            font-size: 1.1em;\n        }\n\n        .denomination-section {\n            margin-bottom: 30px;\n            padding: 15px;\n            border: 1px solid #3A3A3A;\n            border-radius: 8px;\n            background-color: #333;\n        }\n\n        .denomination-section-title {\n            color: #00bfff;\n            font-size: 1.4em;\n            margin-top: 0;\n            margin-bottom: 15px;\n            text-align: center;\n        }\n\n        .denomination-grid {\n            display: grid;\n            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));\n            gap: 15px;\n            margin-top: 10px;\n        }\n\n        .denomination-item {\n            background-color: #3a3a3a;\n            padding: 10px;\n            border-radius: 5px;\n            text-align: center;\n            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n        }\n\n        .denomination-item label {\n            display: block;\n            margin-bottom: 5px;\n            font-weight: bold;\n            font-size: 1em;\n        }\n\n        .denomination-item input {\n            width: calc(100% - 20px);\n            padding: 8px;\n            border: 1px solid #444;\n            border-radius: 4px;\n            background-color: #222;\n            color: #FFF;\n            font-size: 0.9em;\n            text-align: center;\n        }\n\n        .denomination-item .subtotal {\n            margin-top: 5px;\n            font-weight: bold;\n            color: #00bfff;\n            font-size: 0.95em;\n        }\n\n        .button-group {\n            display: flex;\n            justify-content: center;\n            gap: 15px;\n            margin-top: 25px;\n        }\n\n        .button {\n            background-color: #ff5252;\n            color: white;\n            padding: 12px 25px;\n            border: none;\n            border-radius: 5px;\n            cursor: pointer;\n            font-size: 1.1em;\n            transition: background-color 0.3s ease, transform 0.2s ease;\n        }\n\n        .button:hover {\n            background-color: #e04444;\n            transform: translateY(-2px);\n        }\n\n        .button.cancel {\n            background-color: #555;\n        }\n\n        .button.cancel:hover {\n            background-color: #777;\n        }\n\n        .tables-container {\n            display: flex;\n            flex-wrap: wrap;\n            gap: 20px;\n            justify-content: center;\n            margin-top: 20px;\n        }\n\n        .mini-table {\n            background-color: #333;\n            padding: 15px;\n            border-radius: 8px;\n            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);\n            width: calc(25% - 15px);\n            min-width: 280px;\n            box-sizing: border-box;\n            position: relative;\n        }\n\n        .mini-table h3 {\n            color: #ff5252;\n            margin-top: 0;\n            margin-bottom: 10px;\n            text-align: center;\n            font-size: 1.3em;\n        }\n\n        .mini-table table {\n            width: 100%;\n            border-collapse: collapse;\n            margin-bottom: 10px;\n        }\n\n        .mini-table th, .mini-table td {\n            border: 1px solid #444;\n            padding: 8px;\n            text-align: left;\n            color: #e0e0e0;\n            font-size: 0.9em;\n        }\n\n        .mini-table th {\n            background-color: #3a3a3a;\n            color: #ff5252;\n        }\n\n        .mini-table .total-row td {\n            font-weight: bold;\n            background-color: #3a3a3a;\n            color: #00bfff;\n        }\n\n        .mini-table .delete-btn,\n        .mini-table .edit-btn {\n            position: absolute;\n            top: 10px;\n            background-color: #ff5252;\n            color: white;\n            border: none;\n            border-radius: 50%;\n            width: 30px;\n            height: 30px;\n            font-size: 1em;\n            cursor: pointer;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            line-height: 1;\n            transition: background-color 0.3s ease, transform 0.2s ease;\n        }\n\n        .mini-table .delete-btn {\n            right: 10px;\n        }\n\n        .mini-table .edit-btn {\n            right: 50px;\n            background-color: #00bfff;\n        }\n\n        .mini-table .delete-btn:hover {\n            background-color: #e04444;\n            transform: scale(1.1);\n        }\n        .mini-table .edit-btn:hover {\n            background-color: #0099e6;\n            transform: scale(1.1);\n        }\n\n        .final-summary-table {\n            width: 100%;\n            border-collapse: collapse;\n            margin-top: 20px;\n        }\n\n        .final-summary-table th, .final-summary-table td {\n            border: 1px solid #444;\n            padding: 10px;\n            text-align: left;\n            color: #e0e0e0;\n            font-size: 1.05em;\n        }\n\n        .final-summary-table th {\n            background-color: #3a3a3a;\n            color: #ff5252;\n        }\n\n        .final-summary-table .total-row td {\n            font-weight: bold;\n            background-color: #3a3a3a;\n            color: #00bfff;\n        }\n\n        .difference-row td {\n            font-weight: bold;\n            background-color: #3a3a3a;\n            color: #ffff00;\n        }\n\n        .print-buttons-container {\n            display: flex;\n            justify-content: center;\n            gap: 20px;\n            margin-bottom: 30px;\n            width: 100%;\n            max-width: 1200px;\n        }\n\n        .print-button {\n            background-color: #00bfff;\n            color: white;\n            padding: 12px 25px;\n            border: none;\n            border-radius: 5px;\n            cursor: pointer;\n            font-size: 1.1em;\n            transition: background-color 0.3s ease, transform 0.2s ease;\n        }\n\n        .print-button:hover {\n            background-color: #0099e6;\n            transform: translateY(-2px);\n        }\n\n        .summary-display {\n            background-color: #282828;\n            padding: 20px;\n            border-radius: 8px;\n            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);\n            width: 90%;\n            max-width: 1200px;\n            margin-bottom: 30px;\n            display: flex;\n            justify-content: space-around;\n            flex-wrap: wrap;\n            gap: 15px;\n        }\n\n        .summary-item {\n            font-size: 1.5em;\n            font-weight: bold;\n            color: #00bfff;\n            text-align: center;\n            flex: 1;\n            min-width: 250px;\n        }\n\n        .summary-item.difference {\n            color: #ffff00;\n        }\n\n        .second-field-total-preview {\n            background-color: #282828;\n            padding: 15px;\n            border-radius: 8px;\n            margin-top: 20px;\n            text-align: center;\n            font-size: 1.8em;\n            font-weight: bold;\n            color: #00bfff;\n            box-shadow: inset 0 0 8px rgba(0, 191, 255, 0.5);\n        }\n\n        /* Responsive adjustments */\n        @media (max-width: 1024px) {\n            .mini-table {\n                width: calc(33.33% - 15px);\n            }\n        }\n\n        @media (max-width: 768px) {\n            .mini-table {\n                width: calc(50% - 15px);\n            }\n            h1 {\n                font-size: 2em;\n            }\n            .section-title {\n                font-size: 1.5em;\n            }\n            .button-group, .print-buttons-container {\n                flex-direction: column;\n                gap: 10px;\n            }\n            .button, .print-button {\n                width: 100%;\n            }\n            .summary-item {\n                font-size: 1.2em;\n            }\n            .second-field-total-preview {\n                font-size: 1.4em;\n            }\n        }\n\n        @media (max-width: 480px) {\n            .mini-table {\n                width: 100%;\n            }\n            body {\n                padding: 10px;\n            }\n            .container {\n                padding: 15px;\n            }\n            .summary-item {\n                font-size: 1em;\n                min-width: 100%;\n            }\n            .second-field-total-preview {\n                font-size: 1.2em;\n            }\n        }\n\n        /* Estilos para impresión */\n        @media print {\n            body > *:not(.print-area) {\n                display: none !important;\n            }\n            body {\n                background-color: #FFFFFF;\n                color: #000000;\n                padding: 0;\n                margin: 0;\n                display: block;\n            }\n            .print-area {\n                display: block !important;\n                width: 100%;\n                max-width: none;\n                box-shadow: none;\n                margin: 0;\n                padding: 0;\n                background-color: #FFFFFF;\n                color: #000000;\n            }\n            .print-area .section-title,\n            .print-area h3 {\n                color: #000000 !important;\n                border-color: #000000 !important;\n            }\n            .print-area table,\n            .print-area th,\n            .print-area td {\n                border-color: #000000 !important;\n                color: #000000 !important;\n            }\n            .print-area .total-row td {\n                background-color: #E0E0E0 !important;\n                color: #000000 !important;\n            }\n            .print-area .difference-row td {\n                background-color: #F0F0F0 !important;\n                color: #000000 !important;\n            }\n            .mini-table {\n                page-break-inside: avoid;\n                border: 1px solid #000000 !important;\n                margin-bottom: 10px;\n            }\n            .tables-container {\n                display: block;\n            }\n            .summary-display,\n            .second-field-total-preview,\n            .datetime-container {\n                display: none !important;\n            }\n        }\n    \n        .clear-data-section { margin-top: 8px; margin-bottom: 120px; }\n        .clear-all-button { background: linear-gradient(135deg,#991b1b,#ef4444) !important; }\n        .clear-all-button:hover { background: linear-gradient(135deg,#7f1d1d,#dc2626) !important; }\n    </style>\n\n<style id=\"host-theme-adapter\">\n:root{--host-a:#0f172a;--host-b:#2563eb;--host-c:#38bdf8;--host-bg:#020617}\nhtml{background:transparent!important}\nbody{background:radial-gradient(circle at 12% 18%,var(--host-a),transparent 44%),radial-gradient(circle at 88% 22%,var(--host-b),transparent 46%),radial-gradient(circle at 72% 86%,var(--host-c),transparent 48%),var(--host-bg)!important;background-size:220% 220%!important;animation:hostFlow 25s ease-in-out infinite!important;min-height:100vh}\n@keyframes hostFlow{0%,100%{background-position:0% 50%,100% 50%,50% 100%}50%{background-position:100% 50%,0% 50%,50% 0%}}\n.container,.datetime-container,.summary-display{background:rgba(18,23,38,.58)!important;backdrop-filter:blur(28px) saturate(130%);border:1px solid rgba(255,255,255,.15)!important;border-radius:22px!important;box-shadow:0 22px 65px rgba(0,0,0,.42)!important}\n.denomination-section,.denomination-item,.preview{background:rgba(255,255,255,.07)!important;border-color:rgba(255,255,255,.13)!important}\n.section-title,.mini-table h3{color:var(--host-b)!important;border-color:var(--host-b)!important}.subtitle,.denomination-section-title,.subtotal,.summary-item,.second-field-total-preview{color:var(--host-c)!important}\n.button,.print-button{background:linear-gradient(135deg,var(--host-a),var(--host-b))!important;border-radius:13px!important;box-shadow:0 9px 24px color-mix(in srgb,var(--host-b) 32%,transparent)}\n@media print{body{animation:none!important;background:#fff!important}.container{backdrop-filter:none!important}}\n</style>\n</head>\n<body>\n\n    <h1>CUADRE DEPÓSITOS VARIOS</h1>\n    <h2 class=\"subtitle\">M.V.C.G.</h2>\n\n    <div class=\"datetime-container\">\n        <p id=\"date-display\"></p>\n        <p id=\"time-display\"></p>\n    </div>\n\n    <div class=\"print-buttons-container\">\n        <button class=\"print-button\" onclick=\"printSavedTables()\">Imprimir Cuadres Guardados</button>\n        <button class=\"print-button\" onclick=\"printFinalSummary()\">Imprimir Resumen Final</button>\n    </div>\n\n    <div class=\"container\" id=\"first-field-container\">\n        <h2 class=\"section-title\">Primer Campo: Información General</h2>\n        <div class=\"input-group\">\n            <label for=\"numeroBolsa\">Número de Bolsa (Opcional):</label>\n            <input type=\"text\" id=\"numeroBolsa\" placeholder=\"Ej. B001\">\n        </div>\n        <div class=\"input-group\">\n            <label for=\"cantidadContenida\">Cantidad Contenida (en Quetzales):</label>\n            <input type=\"number\" id=\"cantidadContenida\" step=\"0.01\" min=\"0\" oninput=\"updatePreview('cantidadContenida', 'previewCantidadContenida')\" placeholder=\"Ej. 1500.75\">\n            <div class=\"preview\" id=\"previewCantidadContenida\">Q 0.00</div>\n        </div>\n    </div>\n\n    <div class=\"container summary-display\" id=\"summaryDisplay\">\n        <div class=\"summary-item\">\n            Cantidad Contada: <span id=\"displayTotalCuadrado\">Q 0.00</span>\n        </div>\n        <div class=\"summary-item difference\">\n            Diferencia: <span id=\"displayDiferencia\">Q 0.00</span>\n        </div>\n    </div>\n\n    <div class=\"container\" id=\"second-field-container\">\n        <h2 class=\"section-title\">Segundo Campo: Ingreso de Monedas y Billetes</h2>\n\n        <div class=\"second-field-total-preview\">\n            Total Ingresado: <span id=\"currentDenominationsTotal\">Q 0.00</span>\n        </div>\n\n        <div class=\"denomination-section\">\n            <h3 class=\"denomination-section-title\">Billetes</h3>\n            <div class=\"denomination-grid\">\n                <div class=\"denomination-item\">\n                    <label>Q 200</label>\n                    <input type=\"text\" id=\"bill200\" data-value=\"200\" oninput=\"calculateDenomination('bill200')\" placeholder=\"Piezas (ej. 5 o 2*3)\">\n                    <div class=\"subtotal\" id=\"subtotalbill200\">Q 0.00</div>\n                </div>\n                <div class=\"denomination-item\">\n                    <label>Q 100</label>\n                    <input type=\"text\" id=\"bill100\" data-value=\"100\" oninput=\"calculateDenomination('bill100')\" placeholder=\"Piezas (ej. 5 o 2*3)\">\n                    <div class=\"subtotal\" id=\"subtotalbill100\">Q 0.00</div>\n                </div>\n                <div class=\"denomination-item\">\n                    <label>Q 50</label>\n                    <input type=\"text\" id=\"bill50\" data-value=\"50\" oninput=\"calculateDenomination('bill50')\" placeholder=\"Piezas (ej. 5 o 2*3)\">\n                    <div class=\"subtotal\" id=\"subtotalbill50\">Q 0.00</div>\n                </div>\n                <div class=\"denomination-item\">\n                    <label>Q 20</label>\n                    <input type=\"text\" id=\"bill20\" data-value=\"20\" oninput=\"calculateDenomination('bill20')\" placeholder=\"Piezas (ej. 5 o 2*3)\">\n                    <div class=\"subtotal\" id=\"subtotalbill20\">Q 0.00</div>\n                </div>\n                <div class=\"denomination-item\">\n                    <label>Q 10</label>\n                    <input type=\"text\" id=\"bill10\" data-value=\"10\" oninput=\"calculateDenomination('bill10')\" placeholder=\"Piezas (ej. 5 o 2*3)\">\n                    <div class=\"subtotal\" id=\"subtotalbill10\">Q 0.00</div>\n                </div>\n                <div class=\"denomination-item\">\n                    <label>Q 5</label>\n                    <input type=\"text\" id=\"bill5\" data-value=\"5\" oninput=\"calculateDenomination('bill5')\" placeholder=\"Piezas (ej. 5 o 2*3)\">\n                    <div class=\"subtotal\" id=\"subtotalbill5\">Q 0.00</div>\n                </div>\n            </div>\n        </div>\n\n        <div class=\"denomination-section\">\n            <h3 class=\"denomination-section-title\">Monedas</h3>\n            <div class=\"denomination-grid\">\n                <div class=\"denomination-item\">\n                    <label>Q 1.00</label>\n                    <input type=\"text\" id=\"coin1\" data-value=\"1\" oninput=\"calculateDenomination('coin1')\" placeholder=\"Piezas (ej. 5 o 2*3)\">\n                    <div class=\"subtotal\" id=\"subtotalcoin1\">Q 0.00</div>\n                </div>\n                <div class=\"denomination-item\">\n                    <label>Q 0.50</label>\n                    <input type=\"text\" id=\"coin050\" data-value=\"0.50\" oninput=\"calculateDenomination('coin050')\" placeholder=\"Piezas (ej. 5 o 2*3)\">\n                    <div class=\"subtotal\" id=\"subtotalcoin050\">Q 0.00</div>\n                </div>\n                <div class=\"denomination-item\">\n                    <label>Q 0.25</label>\n                    <input type=\"text\" id=\"coin025\" data-value=\"0.25\" oninput=\"calculateDenomination('coin025')\" placeholder=\"Piezas (ej. 5 o 2*3)\">\n                    <div class=\"subtotal\" id=\"subtotalcoin025\">Q 0.00</div>\n                </div>\n                <div class=\"denomination-item\">\n                    <label>Q 0.10</label>\n                    <input type=\"text\" id=\"coin010\" data-value=\"0.10\" oninput=\"calculateDenomination('coin010')\" placeholder=\"Piezas (ej. 5 o 2*3)\">\n                    <div class=\"subtotal\" id=\"subtotalcoin010\">Q 0.00</div>\n                </div>\n                <div class=\"denomination-item\">\n                    <label>Q 0.05</label>\n                    <input type=\"text\" id=\"coin005\" data-value=\"0.05\" oninput=\"calculateDenomination('coin005')\" placeholder=\"Piezas (ej. 5 o 2*3)\">\n                    <div class=\"subtotal\" id=\"subtotalcoin005\">Q 0.00</div>\n                </div>\n                <div class=\"denomination-item\">\n                    <label>Q 0.01</label>\n                    <input type=\"text\" id=\"coin001\" data-value=\"0.01\" oninput=\"calculateDenomination('coin001')\" placeholder=\"Piezas (ej. 5 o 2*3)\">\n                    <div class=\"subtotal\" id=\"subtotalcoin001\">Q 0.00</div>\n                </div>\n            </div>\n        </div>\n\n        <div class=\"button-group\">\n            <button class=\"button\" id=\"mainActionButton\" onclick=\"handleSaveOrAdd()\">Agregar Cuadre</button>\n            <button class=\"button cancel\" id=\"cancelEditButton\" onclick=\"cancelEdit()\" style=\"display: none;\">Cancelar Edición</button>\n        </div>\n    </div>\n\n    <div class=\"container print-area\" id=\"third-field-container\">\n        <h2 class=\"section-title\">Tercer Campo: Cuadres Guardados</h2>\n        <div class=\"tables-container\" id=\"savedTablesContainer\">\n            </div>\n    </div>\n\n    <div class=\"container print-area\" id=\"fourth-field-container\">\n        <h2 class=\"section-title\">Cuarto Campo: Resumen Final</h2>\n        <table class=\"final-summary-table\">\n            <thead>\n                <tr>\n                    <th>Detalle</th>\n                    <th>Valor (Q) / Cantidad</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr>\n                    <td>Número de Bolsa:</td>\n                    <td id=\"summaryNumeroBolsa\">N/A</td>\n                </tr>\n                <tr>\n                    <td>Cantidad Contenida:</td>\n                    <td id=\"summaryCantidadContenida\">Q 0.00</td>\n                </tr>\n                <tr>\n                    <td>Total Billetes y Monedas Cuadradas (Valor):</td>\n                    <td id=\"summaryTotalCuadrado\">Q 0.00</td>\n                </tr>\n                <tr>\n                    <td colspan=\"2\" style=\"text-align: center; background-color: #3A3A3A; color: #ff5252; font-weight: bold;\">SUMA DE PIEZAS POR DENOMINACIÓN</td>\n                </tr>\n            </tbody>\n            <tbody id=\"summaryPiecesDetail\">\n                </tbody>\n            <tbody>\n                <tr class=\"difference-row\">\n                    <td>Diferencia (Contenido - Cuadrado):</td>\n                    <td id=\"summaryDiferencia\">Q 0.00</td>\n                </tr>\n            </tbody>\n        </table>\n    </div>\n\n\n    <div class=\"container clear-data-section\">\n        <h2 class=\"section-title\">Mantenimiento de datos</h2>\n        <p style=\"text-align:center;\">Elimina todos los cuadres creados, valores ingresados y el resumen actual.</p>\n        <div class=\"button-group\">\n            <button class=\"button clear-all-button\" type=\"button\" onclick=\"clearAllDepositsData()\">Limpiar datos</button>\n        </div>\n    </div>\n    <script>\n        let tableCounter = 0;\n        let totalSumOfAllTables = 0;\n        let allTableData = [];\n        let currentEditTableId = null;\n\n        const denominations = {\n            'bill200': 200, 'bill100': 100, 'bill50': 50, 'bill20': 20, 'bill10': 10, 'bill5': 5,\n            'coin1': 1,\n            'coin050': 0.50, 'coin025': 0.25, 'coin010': 0.10, 'coin005': 0.05, 'coin001': 0.01\n        };\n\n        const mainActionButton = document.getElementById('mainActionButton');\n        const cancelEditButton = document.getElementById('cancelEditButton');\n        const currentDenominationsTotalDisplay = document.getElementById('currentDenominationsTotal');\n        \n        const dateDisplay = document.getElementById('date-display');\n        const timeDisplay = document.getElementById('time-display');\n\n        function updateClock() {\n            const now = new Date();\n            \n            // Opciones de formato de fecha\n            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };\n            const formattedDate = now.toLocaleDateString('es-ES', dateOptions);\n            dateDisplay.textContent = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);\n            \n            // Opciones de formato de hora (formato 24 horas)\n            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };\n            const formattedTime = now.toLocaleTimeString('es-ES', timeOptions);\n            timeDisplay.textContent = formattedTime;\n        }\n\n        setInterval(updateClock, 1000); // Actualiza el reloj cada segundo\n        updateClock(); // Llama a la función al cargar la página\n\n        function updatePreview(inputId, previewId) {\n            const inputElement = document.getElementById(inputId);\n            const previewElement = document.getElementById(previewId);\n            const value = parseFloat(inputElement.value) || 0;\n            previewElement.textContent = `Q ${value.toFixed(2)}`;\n            updateFinalSummary();\n        }\n\n        function calculateDenomination(inputId) {\n            const inputElement = document.getElementById(inputId);\n            const subtotalElement = document.getElementById(`subtotal${inputId}`);\n            const denominationValue = parseFloat(inputElement.dataset.value);\n            let rawInput = inputElement.value.trim();\n\n            let quantity = 0;\n            if (rawInput === '') {\n                quantity = 0;\n            } else {\n                try {\n                    quantity = eval(rawInput);\n                    if (isNaN(quantity)) {\n                        quantity = 0;\n                    }\n                } catch (e) {\n                    quantity = parseFloat(rawInput) || 0;\n                }\n            }\n\n            const subtotal = quantity * denominationValue;\n            subtotalElement.textContent = `Q ${subtotal.toFixed(2)}`;\n\n            updateCurrentDenominationsTotal();\n        }\n\n        function updateCurrentDenominationsTotal() {\n            let total = 0;\n            for (const id in denominations) {\n                const inputElement = document.getElementById(id);\n                if (inputElement) {\n                    let rawInput = inputElement.value.trim();\n                    let quantity = 0;\n                    if (rawInput !== '') {\n                        try {\n                            quantity = eval(rawInput);\n                            if (isNaN(quantity)) quantity = 0;\n                        } catch (e) {\n                            quantity = parseFloat(rawInput) || 0;\n                        }\n                    }\n                    total += quantity * denominations[id];\n                }\n            }\n            currentDenominationsTotalDisplay.textContent = `Q ${total.toFixed(2)}`;\n        }\n\n\n        function getDenominationQuantities() {\n            const quantities = {};\n            let currentEntryTotal = 0;\n\n            for (const id in denominations) {\n                const inputElement = document.getElementById(id);\n                if (inputElement) {\n                    let rawInput = inputElement.value.trim();\n                    let quantity = 0;\n                    if (rawInput !== '') {\n                        try {\n                            quantity = eval(rawInput);\n                            if (isNaN(quantity)) quantity = 0;\n                        } catch (e) {\n                            quantity = parseFloat(rawInput) || 0;\n                        }\n                    }\n                    quantities[id] = quantity;\n                    currentEntryTotal += quantity * denominations[id];\n                }\n            }\n            return { quantities, currentEntryTotal };\n        }\n\n        function generateTableBodyHtml(quantities, totalValue) {\n            return `\n                <tbody>\n                    ${Object.keys(denominations).map(id => {\n                        const quantity = quantities[id] || 0;\n                        const value = denominations[id];\n                        const subtotal = quantity * value;\n                        let label = '';\n                        if (id.startsWith('bill')) {\n                            label = `Q ${value}`;\n                        } else if (id.startsWith('coin')) {\n                            label = `Q ${value.toFixed(2).replace('0.', '.')}`;\n                        }\n                        return quantity > 0 ? `\n                            <tr>\n                                <td>${label}</td>\n                                <td>${quantity}</td>\n                                <td>Q ${subtotal.toFixed(2)}</td>\n                            </tr>\n                        ` : '';\n                    }).join('')}\n                    <tr class=\"total-row\">\n                        <td colspan=\"2\">TOTAL</td>\n                        <td>Q ${totalValue.toFixed(2)}</td>\n                    </tr>\n                </tbody>\n            `;\n        }\n\n        function handleSaveOrAdd() {\n            const { quantities, currentEntryTotal } = getDenominationQuantities();\n\n            if (currentEditTableId !== null) {\n                const tableIndex = allTableData.findIndex(data => data.tableNumber === currentEditTableId);\n                if (tableIndex > -1) {\n                    totalSumOfAllTables -= allTableData[tableIndex].totalValue;\n\n                    allTableData[tableIndex].quantities = { ...quantities };\n                    allTableData[tableIndex].totalValue = currentEntryTotal;\n\n                    totalSumOfAllTables += currentEntryTotal;\n\n                    const miniTableDiv = document.querySelector(`.mini-table[data-table-id=\"${currentEditTableId}\"]`);\n                    if (miniTableDiv) {\n                        miniTableDiv.querySelector('tbody').outerHTML = generateTableBodyHtml(quantities, currentEntryTotal);\n                    }\n                }\n                currentEditTableId = null;\n                mainActionButton.textContent = 'Agregar Cuadre';\n                cancelEditButton.style.display = 'none';\n            } else {\n                tableCounter++;\n                const tableData = {\n                    tableNumber: tableCounter,\n                    quantities: { ...quantities },\n                    totalValue: currentEntryTotal\n                };\n                allTableData.push(tableData);\n\n                const tablesContainer = document.getElementById('savedTablesContainer');\n                const miniTableDiv = document.createElement('div');\n                miniTableDiv.classList.add('mini-table');\n                miniTableDiv.setAttribute('data-table-id', tableCounter);\n\n                miniTableDiv.innerHTML = `\n                    <button class=\"delete-btn\" onclick=\"deleteTable(${tableCounter})\">X</button>\n                    <button class=\"edit-btn\" onclick=\"editTable(${tableCounter})\">✎</button>\n                    <h3>Tabla #${tableCounter}</h3>\n                    <table>\n                        <thead>\n                            <tr>\n                                <th>Denominación</th>\n                                <th>Piezas</th>\n                                <th>Valor (Q)</th>\n                            </tr>\n                        </thead>\n                        ${generateTableBodyHtml(quantities, currentEntryTotal)}\n                    </table>\n                `;\n                tablesContainer.appendChild(miniTableDiv);\n\n                totalSumOfAllTables += currentEntryTotal;\n            }\n\n            clearInputFields();\n            updateFinalSummary();\n        }\n\n        function editTable(tableId) {\n            const tableToEdit = allTableData.find(data => data.tableNumber === tableId);\n            if (tableToEdit) {\n                currentEditTableId = tableId;\n                mainActionButton.textContent = 'Actualizar Cuadre';\n                cancelEditButton.style.display = 'inline-block';\n\n                clearInputFields();\n\n                for (const id in denominations) {\n                    const inputElement = document.getElementById(id);\n                    if (inputElement && tableToEdit.quantities[id] !== undefined) {\n                        inputElement.value = tableToEdit.quantities[id];\n                        calculateDenomination(id);\n                    }\n                }\n            }\n        }\n\n        function cancelEdit() {\n            currentEditTableId = null;\n            mainActionButton.textContent = 'Agregar Cuadre';\n            cancelEditButton.style.display = 'none';\n            clearInputFields();\n            updateCurrentDenominationsTotal();\n        }\n\n        function clearInputFields() {\n            for (const id in denominations) {\n                const inputElement = document.getElementById(id);\n                if (inputElement) {\n                    inputElement.value = '';\n                    const subtotalElement = document.getElementById(`subtotal${id}`);\n                    if (subtotalElement) {\n                        subtotalElement.textContent = 'Q 0.00';\n                    }\n                }\n            }\n            updateCurrentDenominationsTotal();\n        }\n\n        function deleteTable(tableId) {\n            const tableToDelete = document.querySelector(`.mini-table[data-table-id=\"${tableId}\"]`);\n            if (tableToDelete) {\n                const index = allTableData.findIndex(data => data.tableNumber === tableId);\n                if (index > -1) {\n                    totalSumOfAllTables -= allTableData[index].totalValue;\n                    allTableData.splice(index, 1);\n                }\n                tableToDelete.remove();\n                updateFinalSummary();\n            }\n        }\n\n        function updateFinalSummary() {\n            const numeroBolsa = document.getElementById('numeroBolsa').value || 'N/A';\n            const cantidadContenida = parseFloat(document.getElementById('cantidadContenida').value) || 0;\n\n            document.getElementById('summaryNumeroBolsa').textContent = numeroBolsa;\n            document.getElementById('summaryCantidadContenida').textContent = `Q ${cantidadContenida.toFixed(2)}`;\n            document.getElementById('summaryTotalCuadrado').textContent = `Q ${totalSumOfAllTables.toFixed(2)}`;\n            document.getElementById('displayTotalCuadrado').textContent = `Q ${totalSumOfAllTables.toFixed(2)}`;\n\n\n            const difference = cantidadContenida - totalSumOfAllTables;\n            document.getElementById('summaryDiferencia').textContent = `Q ${difference.toFixed(2)}`;\n            document.getElementById('displayDiferencia').textContent = `Q ${difference.toFixed(2)}`;\n\n            const totalPieces = {};\n            for (const id in denominations) {\n                totalPieces[id] = 0;\n            }\n\n            allTableData.forEach(table => {\n                for (const id in table.quantities) {\n                    totalPieces[id] += table.quantities[id];\n                }\n            });\n\n            const summaryPiecesDetail = document.getElementById('summaryPiecesDetail');\n            summaryPiecesDetail.innerHTML = '';\n\n            for (const id in totalPieces) {\n                if (totalPieces[id] > 0) {\n                    const value = denominations[id];\n                    let label = '';\n                    if (id.startsWith('bill')) {\n                        label = `Q ${value}`;\n                    } else if (id.startsWith('coin')) {\n                        label = `Q ${value.toFixed(2).replace('0.', '.')}`;\n                    }\n                    const row = document.createElement('tr');\n                    row.innerHTML = `\n                        <td>${label} (Piezas):</td>\n                        <td>${totalPieces[id]}</td>\n                    `;\n                    summaryPiecesDetail.appendChild(row);\n                }\n            }\n        }\n\n        function printSavedTables() {\n            document.body.classList.add('print-mode');\n            const thirdFieldContent = document.getElementById('third-field-container').cloneNode(true);\n            const printWindow = window.open('', '_blank');\n            printWindow.document.write('<html><head><title>Imprimir Cuadres</title>');\n            printWindow.document.write('<style>');\n            printWindow.document.write(document.querySelector('style').innerHTML);\n            printWindow.document.write(`\n                body {\n                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n                    background-color: #FFFFFF;\n                    color: #000000;\n                    margin: 0;\n                    padding: 20px;\n                    display: block;\n                }\n                h1, h2.subtitle {\n                    color: #000000 !important;\n                    text-align: center;\n                }\n                .container {\n                    background-color: #FFFFFF;\n                    box-shadow: none;\n                    border: none;\n                }\n                .section-title {\n                    color: #000000 !important;\n                    border-color: #000000 !important;\n                }\n                .mini-table {\n                    border: 1px solid #000000 !important;\n                    background-color: #FFFFFF;\n                    box-shadow: none;\n                    page-break-inside: avoid;\n                    margin-bottom: 15px;\n                }\n                .mini-table h3 {\n                    color: #000000 !important;\n                }\n                .mini-table table, .mini-table th, .mini-table td {\n                    border-color: #000000 !important;\n                    color: #000000 !important;\n                }\n                .mini-table .total-row td {\n                    background-color: #E0E0E0 !important;\n                    color: #000000 !important;\n                }\n                .delete-btn, .edit-btn {\n                    display: none !important;\n                }\n                .tables-container {\n                    display: block;\n                }\n            `);\n            printWindow.document.write('</style>');\n            printWindow.document.write('</head><body>');\n            printWindow.document.write('<h1>CUADRE DEPÓSITOS VARIOS</h1>');\n            printWindow.document.write('<h2 class=\"subtitle\">M.V.C.G.</h2>');\n            printWindow.document.body.appendChild(thirdFieldContent);\n            printWindow.document.write('</body></html>');\n            printWindow.document.close();\n            printWindow.focus();\n            printWindow.print();\n            printWindow.close();\n            document.body.classList.remove('print-mode');\n        }\n\n        function printFinalSummary() {\n            document.body.classList.add('print-mode');\n            const fourthFieldContent = document.getElementById('fourth-field-container').cloneNode(true);\n\n            // Cambiar el título dentro del contenido a imprimir\n            const sectionTitleElement = fourthFieldContent.querySelector('.section-title');\n            if (sectionTitleElement) {\n                sectionTitleElement.textContent = 'Salabancos M.V.C.G.';\n            }\n\n            const printWindow = window.open('', '_blank');\n            printWindow.document.write('<html><head><title>Imprimir Resumen</title>');\n            printWindow.document.write('<style>');\n            printWindow.document.write(document.querySelector('style').innerHTML);\n            printWindow.document.write(`\n                body {\n                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n                    background-color: #FFFFFF;\n                    color: #000000;\n                    margin: 0;\n                    padding: 20px;\n                    display: block;\n                }\n                h1, h2.subtitle {\n                    color: #000000 !important;\n                    text-align: center;\n                }\n                .container {\n                    background-color: #FFFFFF;\n                    box-shadow: none;\n                    border: none;\n                }\n                .section-title {\n                    color: #000000 !important;\n                    border-color: #000000 !important;\n                }\n                .final-summary-table {\n                    border: 1px solid #000000 !important;\n                }\n                .final-summary-table th, .final-summary-table td {\n                    border-color: #000000 !important;\n                    color: #000000 !important;\n                }\n                .final-summary-table th {\n                    background-color: #E0E0E0 !important;\n                }\n                .final-summary-table .total-row td {\n                    background-color: #D0D0D0 !important;\n                    color: #000000 !important;\n                }\n                .difference-row td {\n                    background-color: #C0C0C0 !important;\n                    color: #000000 !important;\n                }\n            `);\n            printWindow.document.write('</style>');\n            printWindow.document.write('</head><body>');\n            printWindow.document.write('<h1>CUADRE DEPÓSITOS VARIOS</h1>');\n            printWindow.document.write('<h2 class=\"subtitle\">M.V.C.G.</h2>');\n            printWindow.document.body.appendChild(fourthFieldContent);\n            printWindow.document.write('</body></html>');\n            printWindow.document.close();\n            printWindow.focus();\n            printWindow.print();\n            printWindow.close();\n            document.body.classList.remove('print-mode');\n        }\n\n\n        function clearAllDepositsData() {\n            if (!confirm('¿Está seguro de borrar todos los datos de Cuadres Varios? Esta acción no se puede deshacer.')) return;\n            allTableData = [];\n            tableCounter = 0;\n            totalSumOfAllTables = 0;\n            currentEditTableId = null;\n            document.getElementById('savedTablesContainer').innerHTML = '';\n            document.getElementById('numeroBolsa').value = '';\n            document.getElementById('cantidadContenida').value = '';\n            document.getElementById('previewCantidadContenida').textContent = 'Q 0.00';\n            mainActionButton.textContent = 'Agregar Cuadre';\n            cancelEditButton.style.display = 'none';\n            clearInputFields();\n            updateFinalSummary();\n            updateCurrentDenominationsTotal();\n            hasUnsavedChanges = false;\n            alert('Todos los datos de Cuadres Varios fueron eliminados.');\n        }\n\n        let hasUnsavedChanges = false;\n\n        function markUnsavedChanges() {\n            hasUnsavedChanges = true;\n        }\n\n        document.addEventListener('DOMContentLoaded', () => {\n            const inputs = document.querySelectorAll('input[type=\"text\"], input[type=\"number\"]');\n            inputs.forEach(input => {\n                input.addEventListener('input', markUnsavedChanges);\n            });\n\n            document.getElementById('mainActionButton').addEventListener('click', markUnsavedChanges);\n            document.getElementById('savedTablesContainer').addEventListener('click', (event) => {\n                if (event.target.classList.contains('delete-btn') || event.target.classList.contains('edit-btn')) {\n                    markUnsavedChanges();\n                }\n            });\n\n            const originalHandleSaveOrAdd = handleSaveOrAdd;\n            handleSaveOrAdd = function() {\n                originalHandleSaveOrAdd();\n                hasUnsavedChanges = false;\n            };\n\n            const originalCancelEdit = cancelEdit;\n            cancelEdit = function() {\n                originalCancelEdit();\n                hasUnsavedChanges = false;\n            };\n            \n\n            updateFinalSummary();\n            updateCurrentDenominationsTotal();\n        });\n\n        window.addEventListener('beforeunload', function (e) {\n            if (hasUnsavedChanges) {\n                e.preventDefault();\n                e.returnValue = '';\n                return '¿Desea eliminar los datos actuales?';\n            }\n        });\n    <\/script>\n\n</body>\n</html>";
+        function syncDepositsTheme() {
+          const frame=document.getElementById('depositsFrame');
+          if (!frame.contentDocument) return;
+          const cs=getComputedStyle(document.documentElement);
+          const root=frame.contentDocument.documentElement;
+          ['a','b','c','bg'].forEach(k=>root.style.setProperty('--host-'+k,cs.getPropertyValue('--theme-'+k)));
+        }
+        function openDepositsTool() {
+          closeSlbTool();
+          const overlay=document.getElementById('depositsOverlay');
+          const frame=document.getElementById('depositsFrame');
+          if (!frame.dataset.loaded) { frame.srcdoc=depositsAppSource; frame.dataset.loaded='true'; frame.addEventListener('load',syncDepositsTheme,{once:false}); }
+          overlay.classList.remove('closing'); overlay.classList.add('active','opening'); overlay.setAttribute('aria-hidden','false');
+          setTimeout(()=>overlay.classList.remove('opening'),650); syncDepositsTheme();
+        }
+        function closeDepositsTool() {
+          const overlay=document.getElementById('depositsOverlay'); if(!overlay.classList.contains('active')) return;
+          overlay.classList.remove('opening'); overlay.classList.add('closing');
+          setTimeout(()=>{overlay.classList.remove('active','closing');overlay.setAttribute('aria-hidden','true');},560);
+        }
+        function openMainFromDock() { closeSlbTool(); closeDepositsTool(); toggleWindow('settingsOverlay',false); toggleWindow('appOverlay',true); }
+        function openSettingsFromDock() { closeSlbTool(); closeDepositsTool(); toggleWindow('appOverlay',false); toggleWindow('settingsOverlay',true); }
+        function closeAllWindows() {
+          closeDepositsTool();
+          toggleWindow('appOverlay',false);
+          toggleWindow('settingsOverlay',false);
+          closeModal('cheques');
+          closeModal('denominations');
+        }
+
+        // --- Pantalla principal, ventana emergente y personalización ---
+        const visualThemes = [
+          {name:'Acero Nocturno', group:'men', colors:['#0f172a','#2563eb','#38bdf8','#020617']},
+          {name:'Fuego Ejecutivo', group:'men', colors:['#7f1d1d','#f97316','#facc15','#180b08']},
+          {name:'Esmeralda Pro', group:'men', colors:['#052e2b','#10b981','#22d3ee','#031412']},
+          {name:'Grafito Violeta', group:'men', colors:['#18181b','#7c3aed','#a78bfa','#09090b']},
+          {name:'Océano Profundo', group:'men', colors:['#082f49','#0284c7','#22d3ee','#020b15']},
+          {name:'Cobre Moderno', group:'men', colors:['#431407','#ea580c','#fb923c','#160805']},
+          {name:'Rosa Aurora', group:'women', colors:['#4c0519','#ec4899','#f9a8d4','#18040d']},
+          {name:'Lavanda Cristal', group:'women', colors:['#2e1065','#a855f7','#ddd6fe','#10051f']},
+          {name:'Cielo Perla', group:'women', colors:['#0c4a6e','#38bdf8','#e0f2fe','#06131b']},
+          {name:'Coral Elegante', group:'women', colors:['#7f1d1d','#fb7185','#fdba74','#210809']},
+          {name:'Menta Brillante', group:'women', colors:['#064e3b','#34d399','#a7f3d0','#041a14']},
+          {name:'Orquídea Premium', group:'women', colors:['#581c87','#d946ef','#f5d0fe','#1c0727']}
+        ];
+        function applyTheme(index) {
+          const t=visualThemes[index] || visualThemes[0];
+          document.documentElement.style.setProperty('--theme-a',t.colors[0]);
+          document.documentElement.style.setProperty('--theme-b',t.colors[1]);
+          document.documentElement.style.setProperty('--theme-c',t.colors[2]);
+          document.documentElement.style.setProperty('--theme-bg',t.colors[3]);
+          localStorage.setItem('mvcgTheme',String(index));
+          if (typeof syncDepositsTheme === 'function') syncDepositsTheme();
+          if (typeof syncSlbTheme === 'function') syncSlbTheme();
+          document.querySelectorAll('.theme-card').forEach((el,i)=>el.classList.toggle('active',i===index));
+        }
+        function renderThemes(){
+          const men=document.getElementById('themesMen'), women=document.getElementById('themesWomen');
+          visualThemes.forEach((t,index)=>{
+            const b=document.createElement('button'); b.type='button'; b.className='theme-card';
+            b.innerHTML=`<span class="theme-dots">${t.colors.slice(0,3).map(c=>`<i style="background:${c}"></i>`).join('')}</span><strong>${t.name}</strong>`;
+            b.addEventListener('click',()=>applyTheme(index));
+            (t.group==='men'?men:women).appendChild(b);
+          });
+          applyTheme(Number(localStorage.getItem('mvcgTheme')||0));
+        }
+        function setBrand(value){
+          const clean=(value||'M.V.C.G').trim().slice(0,42) || 'M.V.C.G';
+          document.getElementById('homeBrand').textContent=clean;
+          document.getElementById('appBrand').textContent=clean;
+          document.getElementById('customBrandInput').value=clean;
+          localStorage.setItem('mvcgBrand',clean);
+        }
+        function toggleWindow(id,show){
+          const el=document.getElementById(id); el.classList.toggle('active',show); el.setAttribute('aria-hidden',String(!show));
+        }
+        document.getElementById('closeAppBtn').addEventListener('click',()=>toggleWindow('appOverlay',false));
+        document.getElementById('closeSettingsBtn').addEventListener('click',()=>toggleWindow('settingsOverlay',false));
+        document.getElementById('saveBrandBtn').addEventListener('click',()=>setBrand(document.getElementById('customBrandInput').value));
+        document.getElementById('customBrandInput').addEventListener('keydown',e=>{if(e.key==='Enter')setBrand(e.target.value)});
+        [document.getElementById('appOverlay'),document.getElementById('settingsOverlay')].forEach(el=>el.addEventListener('click',e=>{if(e.target===el)toggleWindow(el.id,false)}));
+
+
+        function showStorageStatus(message, error = false) {
+            const el = document.getElementById('storageStatus');
+            if (!el) return;
+            el.textContent = message;
+            el.style.color = error ? '#ffb4ab' : '#b7f7d4';
+            clearTimeout(showStorageStatus.timer);
+            showStorageStatus.timer = setTimeout(() => { el.textContent = ''; }, 5000);
+        }
+        function saveCuadresToStorage() {
+            try {
+                localStorage.setItem('cuadresGuardados', JSON.stringify(cuadresGuardados));
+                const comprobacion = JSON.parse(localStorage.getItem('cuadresGuardados') || '[]');
+                if (!Array.isArray(comprobacion) || comprobacion.length !== cuadresGuardados.length) {
+                    throw new Error('La verificación del almacenamiento no coincide.');
+                }
+                return true;
+            } catch (error) {
+                console.error('Error al guardar los cuadres:', error);
+                showStorageStatus('No se pudieron guardar los datos en este navegador.', true);
+                alert('No se pudieron guardar los datos. Verifique que el almacenamiento del navegador esté habilitado.');
+                return false;
+            }
+        }
+
+        // --- Referencias a elementos HTML ---
+        const mainForm = document.getElementById('mainForm');
+        const valorTeoricoInput = document.getElementById('valorTeorico');
+        const diferenciaValoresInput = document.getElementById('diferenciaValores');
+        const totalChequesSpan = document.getElementById('totalCheques');
+        const totalBilletesMonedasSpan = document.getElementById('totalBilletesMonedas');
+        const diferenciaTotalFinalInput = document.getElementById('diferenciaTotalFinal');
+        const idPaqueteInput = document.getElementById('idPaquete');
+        const monedaValorSelect = document.getElementById('monedaValor');
+        const bancoSeleccionSelect = document.getElementById('bancoSeleccion'); 
+        const digitalTime = document.getElementById('digitalTime');
+        const digitalDate = document.getElementById('digitalDate');
+
+        const chequesModalOverlay = document.getElementById('cheques-modal-overlay');
+        const denominationsModalOverlay = document.getElementById('denominations-modal-overlay');
+        const chequeFieldsContainer = document.getElementById('chequeFieldsContainer');
+        const denominationFieldsContainer = document.getElementById('denominationFields');
+        const btnAddCheque = document.getElementById('btnAddCheque');
+        
+        const btnOpenChequesModal = document.getElementById('btnOpenChequesModal');
+        const btnOpenDenominationsModal = document.getElementById('btnOpenDenominationsModal');
+        const btnGuardarCuadre = document.getElementById('btnGuardarCuadre');
+        const btnGenerarPDF = document.getElementById('btnGenerarPDF');
+        const btnEliminarCuadre = document.getElementById('btnEliminarCuadre');
+        const btnBorrarTodo = document.getElementById('btnBorrarTodo');
+        const btnPrintCuadres = document.getElementById('btnPrintCuadres');
+
+        const savedCuadresContainer = document.getElementById('savedCuadresContainer');
+        const printCuadresContainer = document.getElementById('printCuadresContainer');
+
+        let cuadresGuardados = JSON.parse(localStorage.getItem('cuadresGuardados')) || [];
+        let nextCuadreId = cuadresGuardados.length > 0 ? Math.max(...cuadresGuardados.map(c => c.id)) + 1 : 1;
+        let nextChequeId = 1;
+
+        // Nuevas variables globales para los totales numéricos
+        let totalEfectivoContado = 0;
+        let totalChequesContados = 0;
+
+        const denominaciones = {
+            GTQ: {
+                billetes: { 'b_200': 200, 'b_100': 100, 'b_50': 50, 'b_20': 20, 'b_10': 10, 'b_5': 5, 'b_1': 1 },
+                monedas: { 'm_1': 1, 'm_0.50': 0.50, 'm_0.25': 0.25, 'm_0.10': 0.10, 'm_0.05': 0.05, 'm_0.01': 0.01 }
+            },
+            USD: {
+                billetes: { 'b_100': 100, 'b_50': 50, 'b_20': 20, 'b_10': 10, 'b_5': 5, 'b_2': 2, 'b_1': 1 },
+                monedas: { 'm_0.50': 0.50, 'm_0.25': 0.25, 'm_0.10': 0.10, 'm_0.05': 0.05, 'm_0.01': 0.01 }
+            },
+            EUR: {
+                billetes: { 'b_200': 200, 'b_100': 100, 'b_50': 50, 'b_20': 20, 'b_10': 10, 'b_5': 5 },
+                monedas: { 'm_2': 2, 'm_1': 1, 'm_0.50': 0.50, 'm_0.20': 0.20, 'm_0.10': 0.10, 'm_0.05': 0.05, 'm_0.02': 0.02, 'm_0.01': 0.01 }
+            }
+        };
+
+        function openModal(modalName) {
+            if (modalName === 'cheques') {
+                chequesModalOverlay.classList.add('active');
+                chequesModalOverlay.style.display = 'flex';
+            } else if (modalName === 'denominations') {
+                denominationsModalOverlay.classList.add('active');
+                denominationsModalOverlay.style.display = 'flex';
+            }
+        }
+        
+        function closeModal(modalName) {
+            if (modalName === 'cheques') {
+                chequesModalOverlay.classList.remove('active');
+                chequesModalOverlay.style.display = '';
+            } else if (modalName === 'denominations') {
+                denominationsModalOverlay.classList.remove('active');
+                denominationsModalOverlay.style.display = '';
+            }
+        }
+
+        function formatNumber(value, currency = 'GTQ') {
+            if (isNaN(value) || value === null || value === '') {
+                value = 0;
+            }
+            const num = parseFloat(value);
+            
+            let options = { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2,
+                useGrouping: true 
+            };
+            let locale = 'es-GT'; 
+            
+            if (currency === 'USD') {
+                locale = 'en-US';
+            } else if (currency === 'EUR') {
+                locale = 'de-DE'; 
+            }
+            
+            return num.toLocaleString(locale, options);
+        }
+
+        function calcularTotalBilletesMonedas() {
+            let total = 0;
+            const currentCurrency = monedaValorSelect.value;
+
+            document.querySelectorAll('.denomination-amount').forEach(input => {
+                const fullDenomKey = input.dataset.denomination;
+                
+                let actualValue = 0;
+                if (fullDenomKey.startsWith('b_')) {
+                    actualValue = denominaciones[currentCurrency].billetes[fullDenomKey];
+                } else if (fullDenomKey.startsWith('m_')) {
+                    actualValue = denominaciones[currentCurrency].monedas[fullDenomKey];
+                }
+                
+                const quantity = parseInt(input.value) || 0; 
+                const subtotal = actualValue * quantity;
+                total += subtotal;
+
+                const displaySpan = input.nextElementSibling;
+                if (displaySpan && displaySpan.classList.contains('denomination-display-value')) {
+                    displaySpan.textContent = formatNumber(subtotal, currentCurrency);
+                }
+            });
+
+            // Se almacena el valor numérico en la variable global
+            totalEfectivoContado = total;
+            totalBilletesMonedasSpan.textContent = formatNumber(total, currentCurrency);
+            calcularDiferenciaPrincipal();
+            calcularDiferenciaTotal();
+        }
+
+        function calcularDiferenciaPrincipal() {
+            const totalContado = totalEfectivoContado + totalChequesContados;
+            const valorTeorico = parseFloat(valorTeoricoInput.value) || 0;
+            const diferencia = totalContado - valorTeorico;
+
+            diferenciaValoresInput.value = formatNumber(diferencia, monedaValorSelect.value);
+            diferenciaValoresInput.style.color = (diferencia !== 0) ? '#B71C1C' : '#2E7D32'; 
+            
+            calcularDiferenciaTotal();
+        }
+
+        function calcularTotalCheques() {
+            let total = 0;
+            document.querySelectorAll('.cheque-valor').forEach(input => {
+                total += parseFloat(input.value) || 0;
+            });
+            // Se almacena el valor numérico en la variable global
+            totalChequesContados = total;
+            totalChequesSpan.textContent = formatNumber(total, monedaValorSelect.value);
+            calcularDiferenciaPrincipal();
+            calcularDiferenciaTotal();
+        }
+
+        function calcularDiferenciaTotal() {
+            const valorTeoricoGeneral = parseFloat(valorTeoricoInput.value) || 0;
+            const totalIngresadoCalculado = totalEfectivoContado + totalChequesContados;
+            const diferenciaFinal = valorTeoricoGeneral - totalIngresadoCalculado;
+
+            diferenciaTotalFinalInput.value = formatNumber(diferenciaFinal, monedaValorSelect.value);
+            diferenciaTotalFinalInput.style.color = (diferenciaFinal !== 0) ? '#B71C1C' : '#2E7D32'; 
+        }
+
+        function renderDenominationFields() {
+            denominationFieldsContainer.innerHTML = ''; 
+            const selectedCurrency = monedaValorSelect.value;
+            const currentDenominations = denominaciones[selectedCurrency];
+
+            const billsColumn = document.createElement('div');
+            billsColumn.classList.add('cash-denomination-column');
+            const billsTitle = document.createElement('h5');
+            billsTitle.textContent = 'Billetes';
+            billsColumn.appendChild(billsTitle);
+
+            for (const key in currentDenominations.billetes) {
+                const denominationValue = currentDenominations.billetes[key];
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('denomination-item');
+
+                const label = document.createElement('label');
+                let prefix = '';
+                if (selectedCurrency === 'GTQ') prefix = 'Q ';
+                else if (selectedCurrency === 'USD') prefix = '$ ';
+                else if (selectedCurrency === 'EUR') prefix = '€ ';
+
+                label.textContent = `${prefix}${formatNumber(denominationValue, selectedCurrency).replace(/[,.]00$/, '')}`; 
+                itemDiv.appendChild(label);
+
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.min = '0';
+                input.placeholder = '0';
+                input.dataset.denomination = key; 
+                input.classList.add('denomination-amount');
+                input.addEventListener('input', calcularTotalBilletesMonedas);
+                itemDiv.appendChild(input);
+
+                const displayValueSpan = document.createElement('span');
+                displayValueSpan.classList.add('denomination-display-value');
+                displayValueSpan.textContent = formatNumber(0, selectedCurrency); 
+                itemDiv.appendChild(displayValueSpan);
+
+                billsColumn.appendChild(itemDiv);
+            }
+            denominationFieldsContainer.appendChild(billsColumn);
+
+            const coinsColumn = document.createElement('div');
+            coinsColumn.classList.add('cash-denomination-column');
+            const coinsTitle = document.createElement('h5');
+            coinsTitle.textContent = 'Monedas';
+            coinsColumn.appendChild(coinsTitle);
+
+            for (const key in currentDenominations.monedas) {
+                const denominationValue = currentDenominations.monedas[key];
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('denomination-item');
+
+                const label = document.createElement('label');
+                let prefix = '';
+                if (selectedCurrency === 'GTQ') prefix = 'Q ';
+                else if (selectedCurrency === 'USD') prefix = '$ ';
+                else if (selectedCurrency === 'EUR') prefix = '€ ';
+
+                const denomText = denominationValue < 1 ? denominationValue.toFixed(2) : formatNumber(denominationValue, selectedCurrency).replace(/[,.]00$/, '');
+                label.textContent = `${prefix}${denomText}`;
+                itemDiv.appendChild(label);
+
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.min = '0';
+                input.placeholder = '0';
+                input.dataset.denomination = key; 
+                input.classList.add('denomination-amount');
+                input.addEventListener('input', calcularTotalBilletesMonedas);
+                itemDiv.appendChild(input);
+
+                const displayValueSpan = document.createElement('span');
+                displayValueSpan.classList.add('denomination-display-value');
+                displayValueSpan.textContent = formatNumber(0, selectedCurrency);
+                itemDiv.appendChild(displayValueSpan);
+
+                coinsColumn.appendChild(itemDiv);
+            }
+            denominationFieldsContainer.appendChild(coinsColumn);
+
+            calcularTotalBilletesMonedas();
+        }
+
+        function addChequeField(chequeData = {}) {
+            const chequeDiv = document.createElement('div');
+            chequeDiv.classList.add('cheque-item');
+            chequeDiv.dataset.chequeId = chequeData.id || nextChequeId++;
+
+            chequeDiv.innerHTML = `
+                <div class="form-group">
+                    <label>Banco:</label>
+                    <input type="text" class="cheque-banco" placeholder="Nombre del banco" value="${chequeData.banco || ''}">
+                </div>
+                <div class="form-group">
+                    <label>Número de Documento:</label>
+                    <input type="text" class="cheque-num-documento" placeholder="Ej: 123456789" value="${chequeData.numero || ''}">
+                </div>
+                <div class="form-group">
+                    <label>Valor del Documento:</label>
+                    <input type="number" class="cheque-valor" placeholder="Cantidad numérica" step="0.01" value="${chequeData.valor || ''}">
+                </div>
+                <button type="button" class="btn-remove-cheque">Eliminar</button>
+            `;
+            chequeFieldsContainer.appendChild(chequeDiv);
+
+            chequeDiv.querySelector('.cheque-valor').addEventListener('input', calcularTotalCheques);
+            chequeDiv.querySelector('.btn-remove-cheque').addEventListener('click', (event) => {
+                event.target.closest('.cheque-item').remove();
+                calcularTotalCheques(); 
+            });
+        }
+
+        function clearChequeFields() {
+            chequeFieldsContainer.innerHTML = '';
+            calcularTotalCheques();
+        }
+
+        function clearForm() {
+            const currentBancoValue = bancoSeleccionSelect.value; 
+
+            mainForm.reset(); 
+            clearChequeFields(); 
+            renderDenominationFields(); 
+            idPaqueteInput.value = ''; 
+            valorTeoricoInput.value = ''; 
+            diferenciaValoresInput.value = formatNumber(0, monedaValorSelect.value); 
+            diferenciaTotalFinalInput.value = formatNumber(0, monedaValorSelect.value); 
+            
+            diferenciaValoresInput.style.color = '#B71C1C'; 
+            diferenciaTotalFinalInput.style.color = '#2E7D32'; 
+            
+            bancoSeleccionSelect.value = currentBancoValue; 
+        }
+
+        function loadCuadreForEdit(cuadreId) {
+            const cuadre = cuadresGuardados.find(c => c.id === cuadreId);
+            if (cuadre) {
+                clearForm(); 
+                idPaqueteInput.value = cuadre.idPaquete;
+                monedaValorSelect.value = cuadre.moneda;
+                bancoSeleccionSelect.value = cuadre.banco; 
+
+                renderDenominationFields(); 
+                
+                valorTeoricoInput.value = cuadre.valorTeorico;
+
+                for (const key in cuadre.denominaciones) {
+                    const input = denominationFieldsContainer.querySelector(`input[data-denomination="${key}"]`);
+                    if (input) {
+                        input.value = cuadre.denominaciones[key];
+                    }
+                }
+                calcularTotalBilletesMonedas(); 
+
+                cuadre.cheques.forEach(cheque => addChequeField(cheque));
+                calcularTotalCheques(); 
+
+                calcularDiferenciaPrincipal();
+                calcularDiferenciaTotal();
+
+                alert(`Cuadre ID ${cuadre.idPaquete} cargado para edición.`);
+            }
+        }
+
+        function deleteCuadre(cuadreId) {
+            if (confirm(`¿Está seguro de eliminar el cuadre ID ${cuadreId}?`)) {
+                cuadresGuardados = cuadresGuardados.filter(c => c.id !== cuadreId);
+                saveCuadresToStorage();
+                renderSavedCuadres();
+                alert(`Cuadre ID ${cuadreId} eliminado.`);
+            }
+        }
+
+        function renderSavedCuadres() {
+            savedCuadresContainer.innerHTML = '';
+            if (cuadresGuardados.length === 0) {
+                savedCuadresContainer.innerHTML = '<p style="width: 100%; text-align: center;">No hay cuadres guardados.</p>';
+                return;
+            }
+
+            cuadresGuardados.forEach(cuadre => {
+                const cuadreItem = document.createElement('div');
+                cuadreItem.classList.add('saved-cuadre-item');
+                cuadreItem.dataset.id = cuadre.id;
+
+                let chequeSummary = cuadre.cheques.length > 0 ?
+                    cuadre.cheques.map(c => `${c.banco} (${formatNumber(c.valor, cuadre.moneda)})`).join(', ') : 'Ninguno';
+                if (chequeSummary.length > 50) chequeSummary = chequeSummary.substring(0, 47) + '...';
+
+                cuadreItem.innerHTML = `
+                    <div class="id-paquete-display">ID: ${cuadre.idPaquete}</div>
+                    <p><strong>Banco:</strong> <span>${cuadre.banco}</span></p>
+                    <p><strong>Moneda:</strong> <span>${cuadre.moneda}</span></p>
+                    <p><strong>Teórico:</strong> <span>${formatNumber(cuadre.valorTeorico, cuadre.moneda)}</span></p>
+                    <p><strong>Efectivo:</strong> <span>${formatNumber(cuadre.totalBilletesMonedas, cuadre.moneda)}</span></p>
+                    <p><strong>Cheques:</strong> <span>${formatNumber(cuadre.totalCheques, cuadre.moneda)}</span></p>
+                    <p><strong>Diferencia:</strong> <span style="color: ${cuadre.diferenciaFinal === 0 ? '#2E7D32' : '#B71C1C'};">${formatNumber(cuadre.diferenciaFinal, cuadre.moneda)}</span></p>
+                    <p style="font-size: 0.8em; color: #B0B0B0;">Guardado: ${cuadre.fecha}</p>
+                    <div style="display: flex; gap: 5px;">
+                        <button type="button" class="action-buttons" onclick="loadCuadreForEdit(${cuadre.id})">Cargar</button>
+                        <button type="button" class="action-buttons" onclick="deleteCuadre(${cuadre.id})" style="background-color: #B71C1C;">Eliminar</button>
+                    </div>
+                `;
+                savedCuadresContainer.appendChild(cuadreItem);
+            });
+        }
+
+        async function printCuadres() {
+            if (!window.jspdf || !window.jspdf.jsPDF || typeof window.html2canvas !== 'function' || typeof window.JsBarcode !== 'function') {
+                showStorageStatus('No se cargaron las herramientas necesarias para crear el PDF.', true);
+                alert('No fue posible cargar las herramientas del PDF. Conecte el equipo a Internet, recargue la página e intente nuevamente.');
+                return;
+            }
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'pt', 'letter');
+            const pageMargins = { left: 40, right: 40, top: 40, bottom: 40 };
+            const availableWidth = doc.internal.pageSize.width - pageMargins.left - pageMargins.right;
+            const cardWidth = (availableWidth - (2 * 15)) / 3;
+            const gapX = 15;
+            const gapY = 20;
+
+            let currentX = pageMargins.left;
+            let currentY = pageMargins.top;
+            let cardsInCurrentRow = 0;
+
+            if (cuadresGuardados.length === 0) {
+                alert("No hay cuadres guardados para generar el reporte en PDF.");
+                return;
+            }
+
+            for (const cuadre of cuadresGuardados) {
+                const tempDiv = document.createElement('div');
+                tempDiv.classList.add('single-cuadre-print');
+                tempDiv.style.width = `${cardWidth}pt`;
+                tempDiv.style.backgroundColor = '#f9f9f9';
+                tempDiv.style.color = '#000';
+                tempDiv.style.border = '1px solid #ccc';
+                tempDiv.style.marginBottom = '0';
+                tempDiv.style.padding = '10px';
+
+                let billetesTableRows = '';
+                let monedasTableRows = '';
+                const currentCurrencyDenominations = denominaciones[cuadre.moneda];
+
+                billetesTableRows += `<tr><th colspan="3" style="text-align: center; border: 1px solid #ccc; background-color: #eee; color: black;">Billetes</th></tr>`;
+                billetesTableRows += `<tr><th style="border: 1px solid #ccc; background-color: #eee; color: black;">Denominación</th><th style="border: 1px solid #ccc; background-color: #eee; color: black;">Cant.</th><th style="border: 1px solid #ccc; background-color: #eee; color: black;">Total</th></tr>`;
+                for (const key in cuadre.denominaciones) {
+                    if (key.startsWith('b_')) {
+                        const denominationValue = currentCurrencyDenominations.billetes[key];
+                        const quantity = cuadre.denominaciones[key];
+                        if (quantity > 0) {
+                            billetesTableRows += `
+                                <tr>
+                                    <td style="border: 1px solid #ccc; color: black; font-size: 0.8em;">${cuadre.moneda} ${formatNumber(denominationValue, cuadre.moneda).replace(/[,.]00$/, '')}</td>
+                                    <td style="text-align: right; border: 1px solid #ccc; color: black; font-size: 0.8em;">${quantity}</td>
+                                    <td style="text-align: right; border: 1px solid #ccc; color: black; font-size: 0.8em;">${formatNumber(denominationValue * quantity, cuadre.moneda)}</td>
+                                </tr>
+                            `;
+                        }
+                    }
+                }
+
+                monedasTableRows += `<tr><th colspan="3" style="text-align: center; border: 1-px solid #ccc; background-color: #eee; color: black;">Monedas</th></tr>`;
+                monedasTableRows += `<tr><th style="border: 1px solid #ccc; background-color: #eee; color: black;">Denominación</th><th style="border: 1px solid #ccc; background-color: #eee; color: black;">Cant.</th><th style="border: 1px solid #ccc; background-color: #eee; color: black;">Total</th></tr>`;
+                for (const key in cuadre.denominaciones) {
+                    if (key.startsWith('m_')) {
+                        const denominationValue = currentCurrencyDenominations.monedas[key];
+                        const quantity = cuadre.denominaciones[key];
+                        if (quantity > 0) {
+                            monedasTableRows += `
+                                <tr>
+                                    <td style="border: 1px solid #ccc; color: black; font-size: 0.8em;">${cuadre.moneda} ${denominationValue < 1 ? denominationValue.toFixed(2) : formatNumber(denominationValue, cuadre.moneda).replace(/[,.]00$/, '')}</td>
+                                    <td style="text-align: right; border: 1px solid #ccc; color: black; font-size: 0.8em;">${quantity}</td>
+                                    <td style="text-align: right; border: 1px solid #ccc; color: black; font-size: 0.8em;">${formatNumber(denominationValue * quantity, cuadre.moneda)}</td>
+                                </tr>
+                            `;
+                        }
+                    }
+                }
+
+
+                let chequesHtml = '';
+                if (cuadre.cheques && cuadre.cheques.length > 0) {
+                    chequesHtml = `
+                        <h5 style="color: black; margin-top: 10px; margin-bottom: 5px; text-align: center; font-size: 0.9em;">Cheques</h5>
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 5px;">
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid #ccc; padding: 5px; text-align: left; background-color: #eee; color: black; font-size: 0.8em;">Banco</th>
+                                    <th style="border: 1px solid #ccc; padding: 5px; text-align: left; background-color: #eee; color: black; font-size: 0.8em;">No. Doc.</th>
+                                    <th style="border: 1px solid #ccc; padding: 5px; text-align: right; background-color: #eee; color: black; font-size: 0.8em;">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${cuadre.cheques.map(cheque => `
+                                    <tr>
+                                        <td style="border: 1px solid #ccc; padding: 5px; color: black; font-size: 0.8em;">${cheque.banco}</td>
+                                        <td style="border: 1px solid #ccc; padding: 5px; color: black; font-size: 0.8em;">${cheque.numero}</td>
+                                        <td style="border: 1px solid #ccc; padding: 5px; text-align: right; color: black; font-size: 0.8em;">${formatNumber(cheque.valor, cuadre.moneda)}</td>
+                                    </tr>
+                                `).join('')}
+                                <tr>
+                                    <td colspan="2" style="border: 1px solid #ccc; padding: 5px; font-weight: bold; color: black; font-size: 0.8em;">Total Cheques</td>
+                                    <td style="border: 1px solid #ccc; padding: 5px; text-align: right; font-weight: bold; color: black; font-size: 0.8em;">${formatNumber(cuadre.totalCheques, cuadre.moneda)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    `;
+                } else {
+                    chequesHtml = `<p style="font-size: 0.8em; color: black; text-align: center;">No hay cheques registrados.</p>`;
+                }
+
+                const barcodeSvgId = `barcode-${cuadre.id}`;
+                const barcodeHtml = `<div style="text-align: center; margin-top: 10px;"><svg id="${barcodeSvgId}"></svg></div>`;
+
+
+                tempDiv.innerHTML = `
+                    <p style="font-size: 0.9em; color: black; margin: 2px 0;"><strong>ID Ingresado:</strong> ${cuadre.idPaquete}</p>
+                    <p style="font-size: 0.9em; color: black; margin: 2px 0;"><strong>Banco:</strong> ${cuadre.banco}</p>
+                    <p style="font-size: 0.9em; color: black; margin: 2px 0;"><strong>Moneda:</strong> ${cuadre.moneda}</p>
+                    <p style="font-size: 0.85em; color: black; margin: 2px 0;"><strong>Valor Teórico:</strong> ${formatNumber(cuadre.valorTeorico, cuadre.moneda)}</p>
+                    <p style="font-size: 0.85em; color: black; margin: 2px 0;"><strong>Valor Contado:</strong> ${formatNumber(cuadre.totalContado, cuadre.moneda)}</p>
+                    <p style="font-size: 0.85em; color: black; margin: 2px 0;"><strong>Diferencia:</strong> ${formatNumber(cuadre.diferenciaPrincipal, cuadre.moneda)}</p>
+                    
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 5px;">
+                        <tbody>${billetesTableRows}</tbody>
+                    </table>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 5px;">
+                        <tbody>${monedasTableRows}</tbody>
+                    </table>
+                    <p style="font-size: 0.85em; color: black; margin: 2px 0;"><strong>Total Efectivo:</strong> ${formatNumber(cuadre.totalBilletesMonedas, cuadre.moneda)}</p>
+                    ${chequesHtml}
+                    <p style="font-size: 0.85em; color: black; margin: 2px 0;"><strong>Diferencia Final:</strong> <span style="color: ${cuadre.diferenciaFinal === 0 ? 'green' : 'red'};">${formatNumber(cuadre.diferenciaFinal, cuadre.moneda)}</span></p>
+                    <p style="font-size: 0.7em; color: #555; text-align: center; margin-top: 5px;">Fecha: ${cuadre.fecha}</p>
+                    ${barcodeHtml}
+                    <p style="font-size: 0.7em; color: #555; text-align: left; margin: 5px 0 0 0;">M.V.C.G.</p>
+                `;
+                document.body.appendChild(tempDiv);
+
+                try {
+                    JsBarcode(`#${barcodeSvgId}`, cuadre.idPaquete, {
+                        format: "CODE128",
+                        displayValue: true,
+                        height: 40,
+                        width: 1.5,
+                        margin: 5,
+                        fontSize: 12,
+                        textMargin: 5
+                    });
+                } catch (barcodeError) {
+                    console.error(`Error generating barcode for ID ${cuadre.idPaquete}:`, barcodeError);
+                }
+
+                try {
+                    const canvas = await html2canvas(tempDiv, {
+                        scale: 2,
+                        backgroundColor: null,
+                    });
+                    const imgData = canvas.toDataURL('image/png');
+                    const imgHeightActual = canvas.height * cardWidth / canvas.width;
+
+                    if (currentX + cardWidth > doc.internal.pageSize.width - pageMargins.right) {
+                        currentX = pageMargins.left;
+                        currentY += imgHeightActual + gapY;
+                        cardsInCurrentRow = 0;
+                    }
+                    if (currentY + imgHeightActual > doc.internal.pageSize.height - pageMargins.bottom) {
+                        doc.addPage();
+                        currentX = pageMargins.left;
+                        currentY = pageMargins.top;
+                        cardsInCurrentRow = 0;
+                    }
+
+                    doc.addImage(imgData, 'PNG', currentX, currentY, cardWidth, imgHeightActual);
+                    currentX += cardWidth + gapX;
+                    cardsInCurrentRow++;
+                } catch (error) {
+                    console.error("Error al capturar con html2canvas para Cuadre Remesas:", error);
+                    alert("Hubo un error al generar el PDF para Cuadre Remesas. Por favor, intente de nuevo. Revise la consola para más detalles.");
+                } finally {
+                    document.body.removeChild(tempDiv);
+                }
+            }
+
+            doc.save('Reporte_Cuadres_Remesas.pdf');
+            showStorageStatus('PDF generado correctamente. Revise la carpeta de descargas.');
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = now.toLocaleDateString('es-ES', options);
+            digitalDate.textContent = formattedDate;
+
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            digitalTime.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+
+        monedaValorSelect.addEventListener('change', () => {
+            renderDenominationFields();
+            calcularTotalCheques();
+            calcularDiferenciaPrincipal();
+        });
+        valorTeoricoInput.addEventListener('input', calcularDiferenciaPrincipal);
+
+        btnOpenChequesModal.addEventListener('click', () => openModal('cheques'));
+        btnOpenDenominationsModal.addEventListener('click', () => {
+            renderDenominationFields();
+            openModal('denominations');
+        });
+        btnAddCheque.addEventListener('click', () => addChequeField());
+
+        btnGuardarCuadre.addEventListener('click', () => {
+            const idPaquete = idPaqueteInput.value.trim();
+            if (!idPaquete) {
+                alert('Por favor, ingrese un ID de Paquete.');
+                return;
+            }
+
+            const valorTeorico = parseFloat(valorTeoricoInput.value) || 0;
+            const totalContado = totalEfectivoContado + totalChequesContados;
+            const diferenciaPrincipal = totalContado - valorTeorico;
+            const diferenciaFinal = valorTeorico - totalContado;
+
+            const chequesData = [];
+            document.querySelectorAll('.cheque-item').forEach(item => {
+                chequesData.push({
+                    id: item.dataset.chequeId,
+                    banco: item.querySelector('.cheque-banco').value,
+                    numero: item.querySelector('.cheque-num-documento').value,
+                    valor: parseFloat(item.querySelector('.cheque-valor').value) || 0
+                });
+            });
+
+            const denominacionesData = {};
+            document.querySelectorAll('.denomination-amount').forEach(input => {
+                denominacionesData[input.dataset.denomination] = parseInt(input.value) || 0;
+            });
+
+            const newCuadre = {
+                id: nextCuadreId++,
+                idPaquete: idPaquete,
+                moneda: monedaValorSelect.value,
+                banco: bancoSeleccionSelect.value,
+                valorTeorico: valorTeorico,
+                totalContado: totalContado,
+                diferenciaPrincipal: diferenciaPrincipal,
+                totalBilletesMonedas: totalEfectivoContado,
+                totalCheques: totalChequesContados,
+                diferenciaFinal: diferenciaFinal,
+                cheques: chequesData,
+                denominaciones: denominacionesData,
+                fecha: new Date().toLocaleString()
+            };
+
+            cuadresGuardados.push(newCuadre);
+            if (!saveCuadresToStorage()) {
+                cuadresGuardados.pop();
+                nextCuadreId--;
+                return;
+            }
+            showStorageStatus('Datos guardados y verificados correctamente.');
+            alert('Cuadre guardado exitosamente y verificado en el navegador.');
+            clearForm();
+            renderSavedCuadres();
+        });
+
+        btnGenerarPDF.addEventListener('click', printCuadres);
+        btnPrintCuadres.addEventListener('click', printCuadres);
+
+        btnEliminarCuadre.addEventListener('click', () => {
+            const idToDelete = prompt('Ingrese el ID del paquete a eliminar:');
+            if (idToDelete) {
+                const initialLength = cuadresGuardados.length;
+                cuadresGuardados = cuadresGuardados.filter(c => c.idPaquete !== idToDelete);
+                if (cuadresGuardados.length < initialLength) {
+                    saveCuadresToStorage();
+                    alert(`Cuadre ${idToDelete} eliminado.`);
+                    renderSavedCuadres();
+                } else {
+                    alert(`No se encontró ningún cuadre con el ID ${idToDelete}.`);
+                }
+            }
+        });
+
+        btnBorrarTodo.addEventListener('click', () => {
+            if (confirm('¿Está seguro de que desea borrar TODOS los cuadres guardados? Esta acción es irreversible.')) {
+                localStorage.removeItem('cuadresGuardados');
+                cuadresGuardados = [];
+                nextCuadreId = 1;
+                alert('Todos los cuadres han sido eliminados.');
+                clearForm();
+                renderSavedCuadres();
+            }
+        });
+
+        window.addEventListener('beforeunload', (event) => {
+            if (cuadresGuardados.length > 0) {
+                event.preventDefault();
+                event.returnValue = '';
+            }
+        });
+        
+        function askForPassword() {
+            const password = prompt("Ingrese la contraseña general para iniciar el programa:");
+            if (password !== "4612") {
+                alert("Contraseña incorrecta.");
+                window.location.reload();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            askForPassword();
+            renderThemes();
+            setBrand(localStorage.getItem('mvcgBrand') || 'M.V.C.G');
+            updateClock();
+            setInterval(updateClock, 1000);
+            renderDenominationFields();
+            renderSavedCuadres();
+        });
+    </script>
+</body>
+</html>
