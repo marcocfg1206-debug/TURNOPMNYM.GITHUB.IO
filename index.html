@@ -733,10 +733,21 @@
         .tool-titlebar { position:absolute; z-index:2; left:16px; top:13px; display:flex; gap:8px; }
         .traffic { width:16px;height:16px;border-radius:50%;border:0;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}
         .traffic.close{background:#ff5f57}.traffic.min{background:#febc2e}
-        @media(max-width:650px){.dock-item{width:49px;height:49px}.mac-dock{gap:6px;padding:8px 10px}.dock-item:hover{margin:0 3px}.tool-overlay{padding:8px}.tool-window{height:94vh}}
+        @media(max-width:650px){.dock-item{width:49px;height:49px}.mac-dock{gap:6px;padding:8px 10px}.dock-item:hover{margin:0 3px}.tool-overlay{padding:8px}.tool-window{height:94vh}.home-datetime{grid-template-columns:1fr}.home-card{width:94%}.brand-mark{font-size:clamp(2.6rem,14vw,5rem)}}
 
 
-        #homeScreen { display: none !important; }
+        #homeScreen { display: grid !important; }
+        .home-card { position:relative; overflow:hidden; }
+        .home-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(105,210,255,.1),transparent 45%,rgba(255,130,146,.08)); pointer-events:none; }
+        .home-card > * { position:relative; }
+        .home-subtitle { font-family:Georgia,'Times New Roman',serif; font-weight:700; letter-spacing:.06em; }
+        .home-description { font-size:1rem; letter-spacing:.04em; }
+        .home-datetime { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:26px auto 30px; max-width:570px; }
+        .home-clock, .home-calendar { padding:18px; border:1px solid rgba(255,255,255,.18); border-radius:18px; background:rgba(4,12,25,.32); box-shadow:inset 0 1px rgba(255,255,255,.12); }
+        .home-clock-label, .home-calendar-label { margin:0 0 8px; color:rgba(255,255,255,.58); font-size:.7rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; }
+        #homeTime { margin:0; color:#fff; font-family:Georgia,'Times New Roman',serif; font-size:clamp(2rem,6vw,3.7rem); font-variant-numeric:tabular-nums; letter-spacing:.06em; text-shadow:0 5px 24px rgba(0,0,0,.35); }
+        #homeDate { margin:8px 0 0; color:rgba(255,255,255,.78); font-size:.88rem; }
+        #homeCalendar { margin:0; color:#fff; font-family:Georgia,'Times New Roman',serif; font-size:1.65rem; }
         .dock-hint { margin-top: 22px; color: rgba(255,255,255,.72); font-size: 2rem; animation: dockHint 2s ease-in-out infinite; }
         @keyframes dockHint { 0%,100% { transform: translateY(0); opacity:.45; } 50% { transform: translateY(8px); opacity:1; } }
         .home-card { padding-bottom: 38px; }
@@ -765,6 +776,39 @@
           background:rgba(12,16,28,.62);border:1px solid rgba(255,255,255,.2);box-shadow:0 30px 100px rgba(0,0,0,.65);transform-origin:50% 100%}
         .slb-overlay.opening .slb-window{animation:aladdinOpen .62s cubic-bezier(.16,.9,.2,1) both}.slb-overlay.closing .slb-window{animation:aladdinClose .56s cubic-bezier(.55,.02,.85,.35) both}
         .slb-frame{width:100%;height:100%;border:0}.tool-titlebar.slb-controls{top:12px;left:14px}
+        .brand-lockup { text-align:center; padding:8px 18px 20px; border-bottom:1px solid rgba(255,255,255,.14); }
+        .brand-company { margin:0; color:#fff; font-family:Georgia, 'Times New Roman', serif; font-size:clamp(1.35rem, 3vw, 2.15rem); font-weight:700; letter-spacing:.04em; line-height:1.18; text-shadow:0 3px 18px rgba(0,0,0,.35); }
+        .brand-initials { margin:8px 0 2px; color:var(--firebase-yellow); font-size:.78rem; font-weight:800; letter-spacing:.34em; }
+        .brand-location { margin:0; color:rgba(255,255,255,.72); font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; }
+        .brand-lockup + h1 { margin-top:0; }
+                .home-card {
+                    width:min(820px,92%);
+                    padding:clamp(34px,6vw,68px) clamp(22px,5vw,58px) 42px;
+                    border-radius:30px;
+                    background:linear-gradient(145deg,rgba(10,22,40,.78),rgba(18,29,48,.52));
+                    border:1px solid rgba(255,255,255,.24);
+                    box-shadow:0 34px 100px rgba(0,0,0,.5),inset 0 1px rgba(255,255,255,.2),0 0 0 1px rgba(105,210,255,.06);
+                }
+                .home-card::after { content:''; position:absolute; width:280px; height:280px; right:-120px; top:-150px; border:1px solid rgba(105,210,255,.18); border-radius:50%; box-shadow:0 0 0 28px rgba(105,210,255,.035),0 0 0 56px rgba(105,210,255,.02); pointer-events:none; }
+                .home-kicker { margin:0 auto 16px; color:#8de8ff; font-size:.68rem; font-weight:800; letter-spacing:.28em; text-transform:uppercase; }
+                .brand-mark { position:relative; min-height:1.1em; display:grid; place-items:center; font-family:Georgia,'Times New Roman',serif; font-weight:700; font-size:clamp(2rem,5vw,3.6rem); letter-spacing:.18em; line-height:1; color:#fff; text-shadow:0 0 18px rgba(141,232,255,.35),0 8px 35px rgba(0,0,0,.4); }
+                .brand-mark span { grid-area:1/1; animation:brandSwap 5.2s ease-in-out infinite; }
+                .brand-mark span:last-child { animation-delay:2.6s; }
+                @keyframes brandEntrance { from { opacity:0; transform:scale(.92); filter:blur(5px); } to { opacity:1; transform:none; filter:blur(0); } }
+                @keyframes brandSwap { 0%,38% { opacity:1; transform:scale(1); } 50% { opacity:0; transform:scale(.96); } 62%,100% { opacity:0; transform:scale(.96); } }
+                @media (prefers-reduced-motion: reduce) { .brand-mark { animation:none; } }
+                .home-subtitle { margin:18px 0 10px; font-size:clamp(1.25rem,3vw,2rem); letter-spacing:.08em; animation:contentReveal .8s .18s ease-out both; }
+                @keyframes contentReveal { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+                .home-description { max-width:600px; margin:0 auto 24px; color:rgba(255,255,255,.7); font-size:.9rem; letter-spacing:.08em; }
+                .home-datetime { max-width:620px; margin:30px auto 28px; gap:16px; animation:contentReveal .8s .32s ease-out both; }
+                .home-clock,.home-calendar { position:relative; min-height:130px; display:flex; flex-direction:column; justify-content:center; border-radius:20px; background:rgba(3,10,22,.42); border-color:rgba(255,255,255,.2); }
+                .home-clock::before,.home-calendar::before { content:''; position:absolute; left:18px; right:18px; top:0; height:2px; background:linear-gradient(90deg,#69d2ff,transparent); opacity:.75; }
+                #homeTime { font-size:clamp(2.25rem,6vw,3.9rem); letter-spacing:.08em; }
+                #homeCalendar { font-size:clamp(1.35rem,3vw,1.85rem); line-height:1.25; text-transform:capitalize; }
+                .dock-hint { margin-top:18px; color:#8de8ff; font-size:1.7rem; }
+                .mac-dock { padding:11px 15px; border-radius:22px; background:rgba(7,15,29,.7); border-color:rgba(141,232,255,.22); box-shadow:0 18px 60px rgba(0,0,0,.5),inset 0 1px rgba(255,255,255,.18); }
+                .dock-item { background:linear-gradient(145deg,color-mix(in srgb,var(--theme-a) 82%,#fff),var(--theme-b)); border-color:rgba(255,255,255,.28); }
+                @media(max-width:650px){.home-card{padding:34px 18px 30px;border-radius:24px}.home-datetime{gap:11px}.home-clock,.home-calendar{min-height:116px;padding:14px}.home-description{letter-spacing:.04em}.mac-dock{padding:9px 11px}}
 
     </style>
 </head>
@@ -774,8 +818,21 @@
 
     <main id="homeScreen" class="home-screen">
         <section class="home-card">
-            <p id="homeBrand" class="brand-mark">M.V.C.G</p>
+            <p class="home-kicker">Centro operativo · Sala Bancos</p>
+            <p id="homeBrand" class="brand-mark"><span>M.V.C.G</span><span>TAVSA, S.A.</span></p>
             <h1 class="home-subtitle">Sala Bancos Quetzaltenango</h1>
+            <p class="home-description">Transporte y Administracion de Valores, S.A.</p>
+            <section class="home-datetime" aria-label="Fecha y hora actual">
+                <div class="home-clock">
+                    <p class="home-clock-label">Hora actual</p>
+                    <p id="homeTime">00:00:00</p>
+                    <p id="homeDate">Cargando fecha...</p>
+                </div>
+                <div class="home-calendar">
+                    <p class="home-calendar-label">Calendario</p>
+                    <p id="homeCalendar">--</p>
+                </div>
+            </section>
             <p class="home-description">Seleccione una herramienta desde el Dock inferior.</p>
             <div class="dock-hint" aria-hidden="true">⌄</div>
         </section>
@@ -784,8 +841,12 @@
       <div class="app-window-shell">
         <button type="button" class="window-close" id="closeAppBtn" aria-label="Cerrar">&times;</button>
     <div class="contenedor-principal" id="main-app-container">
+        <header class="brand-lockup" aria-label="Identidad de la empresa">
+            <p class="brand-company">Transporte y Administracion de Valores, S.A.</p>
+            <p id="appBrand" class="brand-initials">M.V.C.G.</p>
+            <p class="brand-location">Sala Bancos Quetzaltenango</p>
+        </header>
         <h1>CUADRE BANCOS</h1>
-        <h2 id="appBrand">M.V.C.G.</h2>
 
         <div class="tabs">
         </div>
@@ -998,7 +1059,32 @@
         function openSlbTool() {
           closeDepositsTool(); toggleWindow('appOverlay',false); toggleWindow('settingsOverlay',false);
           const overlay=document.getElementById('slbOverlay'),frame=document.getElementById('slbFrame');
-          if(!frame.dataset.loaded){frame.srcdoc=slbAppSource;frame.dataset.loaded='true';frame.addEventListener('load',syncSlbTheme);}
+                    if(!frame.dataset.loaded){
+                        const priorityBanner = '<section style="margin:16px auto 0;max-width:1520px;padding:15px 18px;border:1px solid rgba(37,182,210,.38);border-radius:16px;background:linear-gradient(110deg,rgba(35,136,255,.18),rgba(7,154,118,.16));box-shadow:0 10px 28px rgba(0,0,0,.18);font:600 13px Segoe UI,Arial,sans-serif;color:#e6eef8"><strong style="color:#7fe6ff;letter-spacing:.06em">PRIORIDAD OPERATIVA</strong><span style="display:block;margin-top:6px;color:#c4d5e8">Lunes: Remesas G&amp;T. Martes: distribución entre Remesas G&amp;T y Remesas BAM. Se conservan los módulos establecidos y cada persona debe pasar por procesos diferentes durante la semana.</span></section>';
+                        const enhancedSlbSource = slbAppSource
+                            .replace(/function buildBaseDay\(date\)\{.*?return result;\n\}/s,
+                                "function buildBaseDay(date){const weekday=date.getDay()-1,result=new Map(),week=weekIndex(date),prioritySequences={1:['dep','ob','gt','bam','mix'],2:['gt','bam','dep','ob','mix'],3:['bam','gt','ob','mix','dep'],4:['ob','dep','mix','gt','bam'],7:['gt','bam','mix','dep','ob'],8:['dep','mix','ob','gt','bam'],9:['bam','gt','dep','mix','ob'],10:['gt','bam','ob','dep','mix'],11:['bam','gt','mix','ob','dep'],12:['gt','bam','dep','mix','ob'],13:['mix','ob','dep','bam','gt'],16:['ob','dep','mix','bam','gt']};if(weekday===0){Object.entries(prioritySequences).forEach(([module,sequence])=>result.set(Number(module),cloneProcess(sequence[0])));return result;}if(weekday===1){Object.entries(prioritySequences).forEach(([module,sequence])=>result.set(Number(module),cloneProcess(sequence[1])));return result;}if(weekday>=2&&weekday<5){Object.entries(prioritySequences).forEach(([module,sequence])=>result.set(Number(module),cloneProcess(sequence[weekday])));return result;}return result;}")
+                            .replace(/function validateBaseWeek\(date\)\{.*?return \{errors,weekMaps,monday\};\n\}/s,
+                                "function validateBaseWeek(date){const monday=startOfWorkWeek(date),errors=[],weekMaps=[],priorityModules=new Set([2,3,7,9,10,11,12]);for(let d=0;d<5;d++){const current=new Date(monday);current.setDate(monday.getDate()+d);const map=buildBaseDay(current);weekMaps.push(map);if(d===0){const c=countProcesses(map);Object.keys(DAILY_TARGET).forEach(k=>{if(c[k]!==DAILY_TARGET[k])errors.push(DAYS[d]+': '+k+' esperado '+DAILY_TARGET[k]+', obtenido '+c[k])})}}const peopleModules=new Map();MODULES.forEach(m=>[m.p,m.a].filter(Boolean).forEach(name=>peopleModules.set(name,m.n)));peopleModules.forEach((module,name)=>{const values=weekMaps.map(x=>x.get(module).id);if(new Set(values).size!==5)errors.push('Persona '+name+' no tiene cinco procesos distintos: '+values.join(', '))});return {errors,weekMaps,monday};}")
+                            .replace(/function renderWeek\(date\)\{[\s\S]*?\}\s*function optionAvailability/s,
+                                "function renderWeek(date){const check=validateBaseWeek(date);$('weekBody').innerHTML=allPeople().filter(person=>!person.special).map(person=>{const processes=check.weekMaps.map(map=>map.get(person.module));const valid=new Set(processes.map(process=>process.id)).size===5;return '<tr><td><b>'+escapeHTML(person.name)+'</b><div class=small>Módulo '+person.module+(person.shared?' · Compartido':' · No compartido')+'</div></td>'+processes.map(process=>'<td class=cell-process><span class=badge '+process.cls+'>'+escapeHTML(process.name)+'</span></td>').join('')+'<td><span class=\"'+(valid?'ok':'bad')+'\">'+(valid?'Cumple':'Revisar')+'</span></td></tr>'}).join('');$('validationMessage').className=check.errors.length?'note error-note':'note success-note';$('validationMessage').innerHTML=check.errors.length?'<b>Se detectaron inconsistencias:</b><br>'+check.errors.map(escapeHTML).join('<br>'):'Validación correcta: cada persona pasa por cinco procesos diferentes durante la semana.';}function optionAvailability")
+                            .replace(/function validateBaseWeek\(date\)\{[\s\S]*?return errors;\s*\}/,
+                                "function validateBaseWeek(date){const monday=startOfWorkWeek(date),errors=[],weekMaps=[],priorityModules=new Set([2,3,7,9,10,11,12]);for(let d=0;d<5;d++){const current=new Date(monday);current.setDate(monday.getDate()+d);const map=buildBaseDay(current);weekMaps.push(map);if(d===0){const c=countProcesses(map);Object.keys(DAILY_TARGET).forEach(k=>{if(c[k]!==DAILY_TARGET[k])errors.push(DAYS[d]+': '+k+' esperado '+DAILY_TARGET[k]+', obtenido '+c[k])})}}priorityModules.forEach(module=>{const values=weekMaps.map(x=>x.get(module).id);if(new Set(values).size!==5)errors.push('Módulo '+module+' no tiene cinco procesos distintos: '+values.join(', '))});return errors;}")
+                            .replace(/function applyOptions\(date,map\)\{.*?\}\s*function countProcesses/s,
+                                "function applyOptions(date,map){const day=date.getDay();if(day===1&&$('optMonday').checked){const candidate=MODULES.find(m=>map.get(m.n).id==='bam');if(candidate)map.set(candidate.n,cloneProcess('ob'));}if((day===1||day===2)&&$('optTransfer').checked){const candidate=MODULES.find(m=>map.get(m.n).id==='mix');if(candidate)map.set(candidate.n,cloneProcess('gt'));}return map;}function countProcesses")
+                            .replace(/function renderAll\(\)\{/,
+                                "function renderAll(){const availableBox=$('availablePeople');if(availableBox){const date=parseDate($('fecha').value),map=buildBaseDay(date),planned=plannedOccupants(date,map),busy=new Set([...planned.values()].flat().filter(Boolean)),available=allPeople().filter(person=>!person.special&&!isAbsent(person.name)&&!busy.has(person.name));availableBox.innerHTML=available.length?available.map(person=>'<span class=available-person><b>'+escapeHTML(person.name)+'</b><small>Módulo '+person.module+' disponible</small></span>').join(''):'<span class=small>No hay personas disponibles para esta fecha.</span>';}")
+                            .replace('const coverage=buildCoverage(date,map);', "const coverage=buildCoverage(date,map);MODULES.filter(m=>!m.shared&&map.get(m.n).id==='ob').forEach(m=>{const current=coverage.get(m.n);if(!current||current.effective.length>=2)return;const busy=new Set([...coverage.values()].flatMap(item=>item.effective));const helper=allPeople().find(person=>!person.special&&!isAbsent(person.name)&&!busy.has(person.name)&&person.module!==m.n);if(helper){coverage.forEach(item=>{item.effective=item.effective.filter(name=>name!==helper.name);item.expected=item.expected.filter(name=>name!==helper.name);item.text=item.effective.length?item.effective.join(' y '):'COBERTURA PENDIENTE';});current.expected.push(helper.name);current.effective.push(helper.name);current.text=current.effective.join(' y ');}});")
+                            .replace(/function buildCoverage\(date,map\)\{[\s\S]*?\}\s*function renderWeek/s,
+                                "function buildCoverage(date,map){const planned=plannedOccupants(date,map),coverage=new Map(),used=new Set(),busy=new Set([...planned.values()].flat().filter(Boolean));MODULES.forEach(m=>{const expected=[...(planned.get(m.n)||[])],effective=expected.filter(name=>!isAbsent(name));expected.filter(isAbsent).forEach(absentName=>{const replacement=(m.shared?[m.p,m.a].find(name=>name!==absentName&&!isAbsent(name)&&!used.has(name)):allPeople().filter(person=>!person.special&&!isAbsent(person.name)&&!busy.has(person.name)&&!used.has(person.name)&&person.module!==m.n).map(person=>person.name).find(Boolean))||'';if(replacement&&!effective.includes(replacement))effective.push(replacement);if(replacement)used.add(replacement);});coverage.set(m.n,{expected,effective,text:effective.length?effective.join(' y '):'<span class=coverage-missing>NO SE CUBRE ESTA OPERACIÓN</span>'});});return coverage;}function renderWeek")
+                            .replace(/function plannedOccupants\(date,map\)\{.*?\}function buildCoverage/s,
+                                "function plannedOccupants(date,map){const data=new Map(),occupied=new Set(),index=businessIndex(date);MODULES.forEach(m=>{const names=m.shared?[((index+m.n)%2===0?m.a:m.p)].filter(Boolean):[m.p];data.set(m.n,names);names.forEach(name=>occupied.add(name));});MODULES.filter(m=>!m.shared&&map.get(m.n).id==='ob').forEach(m=>{const helper=SHARED_MODULES.flatMap(shared=>[shared.p,shared.a]).find(name=>name&&!isAbsent(name)&&!occupied.has(name));if(helper){data.set(m.n,[m.p,helper]);occupied.add(helper);}});return data;}function buildCoverage")
+                            .replace('<th>Módulo</th><th>Lunes</th>', '<th>Persona</th><th>Lunes</th>')
+                            .replace('</body>', '<section class="panel glass"><h2>Personas disponibles</h2><div id="availablePeople" class="available-people"></div></section><style>#absenceList .label,#absenceList textarea[data-justification]{display:none!important}#absenceList{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}.absence-card{margin:0!important;padding:12px!important;border-radius:12px!important}.absence-head{align-items:center}.absence-card .person-name{font-size:.86rem}.absence-card .small{font-size:.72rem;color:var(--muted)}.available-people{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}.available-person{display:flex;flex-direction:column;gap:4px;padding:12px;border:1px solid rgba(37,182,210,.3);border-radius:12px;background:rgba(37,182,210,.1)}.available-person small{color:var(--muted)}.coverage-missing{color:#ff7777;font-weight:800}</style></body>');
+                        frame.srcdoc=enhancedSlbSource.replace('<body>','<body>'+priorityBanner);
+                        frame.dataset.loaded='true';frame.addEventListener('load',syncSlbTheme);
+                        frame.addEventListener('load',()=>{const doc=frame.contentDocument,list=doc&&doc.getElementById('absenceList');if(!list||list.dataset.clickBound)return;list.dataset.clickBound='true';list.addEventListener('click',event=>{const target=event.target.closest('.person-name,.small');if(!target)return;const card=target.closest('.absence-card');const checkbox=card&&card.querySelector('input[data-absence]');if(checkbox)checkbox.click()})});
+                    }
           overlay.classList.remove('closing');overlay.classList.add('active','opening');overlay.setAttribute('aria-hidden','false');
           setTimeout(()=>overlay.classList.remove('opening'),650);syncSlbTheme();
         }
@@ -1073,7 +1159,9 @@
         }
         function setBrand(value){
           const clean=(value||'M.V.C.G').trim().slice(0,42) || 'M.V.C.G';
-          document.getElementById('homeBrand').textContent=clean;
+                    const homeBrand=document.getElementById('homeBrand');
+                    const primaryBrand=homeBrand.querySelector('span');
+                    if(primaryBrand) primaryBrand.textContent=clean; else homeBrand.textContent=clean;
           document.getElementById('appBrand').textContent=clean;
           document.getElementById('customBrandInput').value=clean;
           localStorage.setItem('mvcgBrand',clean);
@@ -1670,6 +1758,13 @@
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
             digitalTime.textContent = `${hours}:${minutes}:${seconds}`;
+
+            const homeTime = document.getElementById('homeTime');
+            const homeDate = document.getElementById('homeDate');
+            const homeCalendar = document.getElementById('homeCalendar');
+            if (homeTime) homeTime.textContent = `${hours}:${minutes}:${seconds}`;
+            if (homeDate) homeDate.textContent = formattedDate;
+            if (homeCalendar) homeCalendar.textContent = now.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
         }
 
 
@@ -1682,7 +1777,6 @@
 
         btnOpenChequesModal.addEventListener('click', () => openModal('cheques'));
         btnOpenDenominationsModal.addEventListener('click', () => {
-            renderDenominationFields();
             openModal('denominations');
         });
         btnAddCheque.addEventListener('click', () => addChequeField());
